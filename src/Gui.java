@@ -1,8 +1,11 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class Gui {
+public class Gui implements ActionListener {
     private static JButton[][] chessButtons = new JButton[8][8];
+    private static EventManager eventManager = new EventManager(chessButtons);
 
     private static void initializeComponents(JFrame frame) {
         JPanel pane = new JPanel(new GridBagLayout());
@@ -17,6 +20,7 @@ public class Gui {
             for (int j = 0; j < 8; j++) {
                 chessButtons[i][j] = new JButton();
                 chessButtons[i][j].setBackground(Color.WHITE);
+                chessButtons[i][j].addActionListener(eventManager);
                 c.gridy = i;
                 c.gridx = j;
                 c.gridwidth = 1;
@@ -31,5 +35,10 @@ public class Gui {
         mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         initializeComponents(mainFrame);
         mainFrame.setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
     }
 }
