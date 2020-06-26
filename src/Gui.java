@@ -2,11 +2,15 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Gui {
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Quadtreecode-Generator ");
-        frame.setSize(800, 1000);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    private static void initializeComponents(JFrame frame){
 
-        frame.setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        JFrame mainFrame = new JFrame("Quadtreecode-Generator ");
+        mainFrame.setSize(800, 1000);
+        mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        initializeComponents(mainFrame);
+        mainFrame.setVisible(true);
     }
 }
