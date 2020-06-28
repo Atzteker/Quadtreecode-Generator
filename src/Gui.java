@@ -7,9 +7,8 @@ public class Gui implements ActionListener {
     private static JButton[][] chessButtons = new JButton[8][8];
     private static EventManager eventManager = new EventManager(chessButtons);
 
-    private static void initializeComponents(JFrame frame) {
-        JPanel pane = new JPanel(new GridBagLayout());
-        frame.setContentPane(pane);
+    private static JPanel initializeChessComponents() {
+        JPanel chessPanel = new JPanel(new GridBagLayout());
 
         GridBagConstraints c = new GridBagConstraints();
         c.weightx = 1;
@@ -24,9 +23,38 @@ public class Gui implements ActionListener {
                 c.gridy = i;
                 c.gridx = j;
                 c.gridwidth = 1;
-                pane.add(chessButtons[i][j], c);
+                chessPanel.add(chessButtons[i][j], c);
             }
         }
+
+        return chessPanel;
+    }
+
+    private static JPanel initializeZahlenfolgeComponents() {
+        JPanel zahlenfolgePanel = new JPanel(new FlowLayout());
+
+
+        return zahlenfolgePanel;
+    }
+
+    private static void initializeComponents(JFrame frame) {
+        JPanel mainPanel = new JPanel(new GridBagLayout());
+        frame.setContentPane(mainPanel);
+        GridBagConstraints c = new GridBagConstraints();
+        c.weightx = 1;
+        c.weighty = 1;
+        c.fill = GridBagConstraints.BOTH;
+
+        c.gridwidth = 1;
+        c.gridheight = 2;
+        c.gridx = 0;
+        c.gridy = 0;
+        mainPanel.add(initializeChessComponents(), c);
+
+        c.gridwidth = 1;
+        c.gridx = 0;
+        c.gridy = 1;
+        mainPanel.add(initializeZahlenfolgeComponents(), c);
     }
 
     public static void main(String[] args) {
