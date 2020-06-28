@@ -38,7 +38,6 @@ public class Gui {
     private static JPanel initializeZahlenfolgeComponents() {
         JPanel zahlenfolgePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         zahlenfolgePanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-        int[] quadrants = {1, 2, 3, 4};
 
         Dimension numberDimension = new Dimension(13, 30);
         for (int i = 0; i < 4; i++) {
@@ -47,17 +46,19 @@ public class Gui {
             zahlencode1LayerButtons[i].setContentAreaFilled(false);
             zahlencode1LayerButtons[i].setBorderPainted(false);
             zahlencode1LayerButtons[i].setMargin(new Insets(0, 0, 0, 0));
+            zahlencode1LayerButtons[i].setForeground(Color.GRAY);
             zahlenfolgePanel.add(zahlencode1LayerButtons[i]);
         }
 
         zahlenfolgePanel.add(new JLabel("|"));
 
         for (int i = 0; i < 16; i++) {
-            zahlencode2LayerButtons[i] = new JButton(String.valueOf(quadrants[i % 4]));
+            zahlencode2LayerButtons[i] = new JButton(String.valueOf((i % 4) + 1));
             zahlencode2LayerButtons[i].setPreferredSize(numberDimension);
             zahlencode2LayerButtons[i].setContentAreaFilled(false);
             zahlencode2LayerButtons[i].setBorderPainted(false);
             zahlencode2LayerButtons[i].setMargin(new Insets(0, 0, 0, 0));
+            zahlencode2LayerButtons[i].setForeground(Color.GRAY);
             zahlenfolgePanel.add(zahlencode2LayerButtons[i]);
 
             if ((i + 1) % 4 == 0) {
@@ -70,11 +71,12 @@ public class Gui {
         zahlenfolgePanel.add(new JLabel("|"));
 
         for (int i = 0; i < 64; i++) {
-            zahlencode3LayerButtons[i] = new JButton(String.valueOf(quadrants[i % 4]));
+            zahlencode3LayerButtons[i] = new JButton(String.valueOf((i % 4) + 1));
             zahlencode3LayerButtons[i].setPreferredSize(numberDimension);
             zahlencode3LayerButtons[i].setContentAreaFilled(false);
             zahlencode3LayerButtons[i].setBorderPainted(false);
             zahlencode3LayerButtons[i].setMargin(new Insets(0, 0, 0, 0));
+            zahlencode3LayerButtons[i].setForeground(Color.GRAY);
             zahlenfolgePanel.add(zahlencode3LayerButtons[i]);
 
             if ((i + 1) % 4 == 0) {
