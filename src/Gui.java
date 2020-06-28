@@ -1,7 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class Gui {
     private static JButton[][] chessButtons = new JButton[8][8];
@@ -19,7 +17,7 @@ public class Gui {
         c.weighty = 1;
         c.fill = GridBagConstraints.BOTH;
 
-        Dimension chessFieldDimension = new Dimension(80,80);
+        Dimension chessFieldDimension = new Dimension(80, 80);
 
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -38,17 +36,17 @@ public class Gui {
     }
 
     private static JPanel initializeZahlenfolgeComponents() {
-        JPanel zahlenfolgePanel = new JPanel(new FlowLayout(FlowLayout.LEFT,0,0));
+        JPanel zahlenfolgePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         zahlenfolgePanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-        int[] quadrants = {1,2,3,4};
+        int[] quadrants = {1, 2, 3, 4};
 
-        Dimension numberDimension = new Dimension(13,30);
+        Dimension numberDimension = new Dimension(13, 30);
         for (int i = 0; i < 4; i++) {
             zahlencode1LayerButtons[i] = new JButton(String.valueOf(i + 1));
             zahlencode1LayerButtons[i].setPreferredSize(numberDimension);
             zahlencode1LayerButtons[i].setContentAreaFilled(false);
             zahlencode1LayerButtons[i].setBorderPainted(false);
-            zahlencode1LayerButtons[i].setMargin(new Insets(0,0,0,0));
+            zahlencode1LayerButtons[i].setMargin(new Insets(0, 0, 0, 0));
             zahlenfolgePanel.add(zahlencode1LayerButtons[i]);
         }
 
@@ -59,10 +57,11 @@ public class Gui {
             zahlencode2LayerButtons[i].setPreferredSize(numberDimension);
             zahlencode2LayerButtons[i].setContentAreaFilled(false);
             zahlencode2LayerButtons[i].setBorderPainted(false);
-            zahlencode2LayerButtons[i].setMargin(new Insets(0,0,0,0));
+            zahlencode2LayerButtons[i].setMargin(new Insets(0, 0, 0, 0));
             zahlenfolgePanel.add(zahlencode2LayerButtons[i]);
-            if ((i+1) % 4 == 0){
-                if (i+1 != 16){
+
+            if ((i + 1) % 4 == 0) {
+                if (i + 1 != 16) {
                     zahlenfolgePanel.add(new JLabel("-"));
                 }
             }
@@ -75,10 +74,11 @@ public class Gui {
             zahlencode3LayerButtons[i].setPreferredSize(numberDimension);
             zahlencode3LayerButtons[i].setContentAreaFilled(false);
             zahlencode3LayerButtons[i].setBorderPainted(false);
-            zahlencode3LayerButtons[i].setMargin(new Insets(0,0,0,0));
+            zahlencode3LayerButtons[i].setMargin(new Insets(0, 0, 0, 0));
             zahlenfolgePanel.add(zahlencode3LayerButtons[i]);
-            if ((i+1) % 4 == 0){
-                if (i+1 != 64){
+
+            if ((i + 1) % 4 == 0) {
+                if (i + 1 != 64) {
                     zahlenfolgePanel.add(new JLabel("-"));
                 }
             }
