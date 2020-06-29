@@ -20,7 +20,59 @@ public class EventManager implements ActionListener {
     }
 
     private void updateZahlencode(Point changedPosition, ChessFieldState chessFieldState) {
+        //TODO
+        // clean this shit
+
         // layer 1 depends on layer 2 depends on layer 3
+        int x = changedPosition.x;
+        int y = changedPosition.y;
+        int[] help = {0, 1, 4, 5, 3, 2, 7, 6, 12, 13, 8, 9, 15, 14, 11, 10};
+        int[] help2 = {0, 0, 1, 1, 0, 0, 1, 1, 3, 3, 2, 2, 3, 3, 2, 2};
+        int index = 70; // poor out of bound exception
+        int index2 = 18;
+        int index3 = 5;
+
+        // first quadrant
+        if (x % 2 == 0 && y % 2 == 0) {
+            index = help[((y / 2) * 4 + x / 2)] * 4;
+            index2 = help[((y / 2) * 4 + x / 2)];
+            index3 = help2[((y / 2) * 4 + x / 2)];
+
+        }
+        // second quadrant
+        if ((x - 1) % 2 == 0 && y % 2 == 0) {
+            index = help[(y / 2) * 4 + (x - 1) / 2] * 4 + 1;
+            index2 = help[(y / 2) * 4 + (x - 1) / 2];
+            index3 = help2[(y / 2) * 4 + (x - 1) / 2];
+        }
+        // fourth quadrant
+        if (x % 2 == 0 && (y - 1) % 2 == 0) {
+            index = help[((y - 1) / 2) * 4 + x / 2] * 4 + 3;
+            index2 = help[((y - 1) / 2) * 4 + x / 2];
+            index3 = help2[((y - 1) / 2) * 4 + x / 2];
+        }
+        // third quadrant
+        if ((x - 1) % 2 == 0 && (y - 1) % 2 == 0) {
+            index = help[((y - 1) / 2) * 4 + (x - 1) / 2] * 4 + 2;
+            index2 = help[((y - 1) / 2) * 4 + (x - 1) / 2];
+            index3 = help2[((y - 1) / 2) * 4 + (x - 1) / 2];
+        }
+
+        if (chessFieldState == ChessFieldState.ACTIVE) {
+            zahlencode3LayerButtons[index].setForeground(Color.BLACK);
+            zahlencode2LayerButtons[index2].setForeground(Color.BLACK);
+            zahlencode1LayerButtons[index3].setForeground(Color.BLACK);
+        } else {
+            zahlencode3LayerButtons[index].setForeground(Color.GRAY);
+            if (zahlencode3LayerButtons[index2 * 4].getForeground() == Color.GRAY && zahlencode3LayerButtons[index2 * 4 + 1].getForeground() == Color.GRAY && zahlencode3LayerButtons[index2 * 4 + 2].getForeground() == Color.GRAY && zahlencode3LayerButtons[index2 * 4 + 3].getForeground() == Color.GRAY) {
+                zahlencode2LayerButtons[index2].setForeground(Color.GRAY);
+            }
+            if (zahlencode2LayerButtons[index3 * 4].getForeground() == Color.GRAY && zahlencode2LayerButtons[index3 * 4 + 1].getForeground() == Color.GRAY && zahlencode2LayerButtons[index3 * 4 + 2].getForeground() == Color.GRAY && zahlencode2LayerButtons[index3 * 4 + 3].getForeground() == Color.GRAY) {
+                zahlencode1LayerButtons[index3].setForeground(Color.GRAY);
+            }
+        }
+
+
     }
 
     private Point getChessButtonPosition(JButton chessButton) {
