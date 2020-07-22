@@ -9,7 +9,8 @@ public class Numbers implements ActionListener {
     private JButton[] numbers3LayerButtons = new JButton[64];
     private JPanel numbersPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 
-    private Color normalColor = new Color(100,100,100, 50);
+    private static Color normalColor = new Color(100,100,100, 50);
+    private static Color highlightColor = Color.BLACK;
     
     public Numbers(){
         numbersPanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
