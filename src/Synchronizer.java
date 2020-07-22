@@ -1,0 +1,2 @@
+public class Synchronizer {
+}
