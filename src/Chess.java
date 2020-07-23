@@ -2,12 +2,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
-public class Chess implements ActionListener {
+public class Chess extends QuadTreeFormatPanel {
     private JButton[][] chessButtons = new JButton[8][8];
-    private JPanel chessPanel = new JPanel(new GridBagLayout());
 
     public Chess(Dimension chessFieldDimension){
+        this.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.weightx = 1;
         c.weighty = 1;
@@ -22,16 +24,29 @@ public class Chess implements ActionListener {
 
                 c.gridy = i;
                 c.gridx = j;
-                chessPanel.add(chessButtons[i][j], c);
+                this.add(chessButtons[i][j], c);
             }
         }
     }
 
-    public JPanel getChessPanel() {
-        return chessPanel;
+    @Override
+    protected void updateAppearance() {
+        System.out.println("Chess update appearance");
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    protected void updateQuad() {
+        quad.setActive();
+        System.out.println("Chess update quad");
+    }
+
+    @Override
+    protected void processAppearanceChange(ActionEvent e) {
+
+    }
+
+    @Override
+    protected String nameTreeFormat() {
+        return "Chess";
     }
 }

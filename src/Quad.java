@@ -23,7 +23,19 @@ public class Quad {
         this.boLeft = null;
     }
 
+    public Quad(Quad that){
+        this(that.upLeft, that.upRight, that.boRight, that.boLeft);
+    }
+
     public boolean isActive() {
         return active;
+    }
+
+    public void setActive(){
+        active = true;
+    }
+
+    public void setInactive(){
+        active = false;
     }
 }
