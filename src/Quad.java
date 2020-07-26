@@ -14,7 +14,7 @@ public class Quad {
         this.active = upLeft.isActive() || upRight.isActive() || boRight.isActive() || boLeft.isActive();
     }
 
-    public Quad(boolean active){
+    public Quad(boolean active) {
         this.active = active;
 
         this.upLeft = null;
@@ -23,19 +23,31 @@ public class Quad {
         this.boLeft = null;
     }
 
-    public Quad(Quad that){
-        this(that.upLeft, that.upRight, that.boRight, that.boLeft);
+    public Quad(Quad that) {
+        if (that.upLeft == null && that.upRight == null && that.boLeft == null && that.boRight == null) {
+            //last element
+            this.upLeft = null;
+            this.upRight = null;
+            this.boRight = null;
+            this.boLeft = null;
+        } else {
+            this.upLeft = new Quad(that.upLeft);
+            this.upRight = new Quad(that.upRight);
+            this.boRight = new Quad(that.boRight);
+            this.boLeft = new Quad(that.boLeft);
+        }
+        this.active = that.isActive();
     }
 
     public boolean isActive() {
         return active;
     }
 
-    public void setActive(){
+    public void setActive() {
         active = true;
     }
 
-    public void setInactive(){
+    public void setInactive() {
         active = false;
     }
 }

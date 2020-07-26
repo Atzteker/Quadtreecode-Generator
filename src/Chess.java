@@ -8,7 +8,7 @@ import java.beans.PropertyChangeListener;
 public class Chess extends QuadTreeFormatPanel {
     private JButton[][] chessButtons = new JButton[8][8];
 
-    public Chess(Dimension chessFieldDimension){
+    public Chess(Dimension chessFieldDimension) {
         this.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.weightx = 1;
@@ -31,13 +31,10 @@ public class Chess extends QuadTreeFormatPanel {
 
     @Override
     protected void updateAppearance() {
-        System.out.println("Chess update appearance");
     }
 
     @Override
     protected void updateQuad() {
-        quad.setActive();
-        System.out.println("Chess update quad");
     }
 
     @Override

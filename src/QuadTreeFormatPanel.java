@@ -26,7 +26,7 @@ public abstract class QuadTreeFormatPanel extends JPanel implements ActionListen
             for (int j = 0; j < 4; j++) {
                 secondLayer[j] = new Quad(new Quad(false), new Quad(false), new Quad(false), new Quad(false));
             }
-            firstLayer[i] = new Quad(secondLayer[0], secondLayer[0], secondLayer[0], secondLayer[0]);
+            firstLayer[i] = new Quad(secondLayer[0], secondLayer[1], secondLayer[2], secondLayer[3]);
         }
         return new Quad(firstLayer[0], firstLayer[1], firstLayer[2], firstLayer[3]);
     }
@@ -61,6 +61,7 @@ public abstract class QuadTreeFormatPanel extends JPanel implements ActionListen
         Quad oldQuad = new Quad(quad);
         updateQuad();
         firePropertyChange(treeFormat, oldQuad, quad);
+        System.out.println("h");
     }
 
     private class QuadListener implements PropertyChangeListener {

@@ -9,10 +9,10 @@ public class Numbers extends QuadTreeFormatPanel {
     private JButton[] numbers2LayerButtons = new JButton[16];
     private JButton[] numbers3LayerButtons = new JButton[64];
 
-    private static Color normalColor = new Color(100,100,100, 50);
+    private static Color normalColor = new Color(100, 100, 100, 50);
     private static Color highlightColor = Color.BLACK;
-    
-    public Numbers(){
+
+    public Numbers() {
         this.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
         this.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 
@@ -69,12 +69,10 @@ public class Numbers extends QuadTreeFormatPanel {
 
     @Override
     protected void updateAppearance() {
-        System.out.println("numbers update Appearance");
     }
 
     @Override
     protected void updateQuad() {
-        System.out.println("number update quad");
     }
 
     @Override

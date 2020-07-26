@@ -8,7 +8,7 @@ public class Gui {
 
     //private static Quad quad;
 
-    private static void initializeListener(){
+    private static void initializeListener() {
         numbers.addQuadListener(chess.getQuadListener(), numbers.getTreeFormat());
         chess.addQuadListener(numbers.getQuadListener(), chess.getTreeFormat());
     }
