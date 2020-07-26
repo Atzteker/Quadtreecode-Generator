@@ -1,9 +1,11 @@
+import java.awt.*;
+
 public class Quad {
     private boolean active;
-    public Quad upLeft;
-    public Quad upRight;
-    public Quad boRight;
-    public Quad boLeft;
+    private Quad upLeft;
+    private Quad upRight;
+    private Quad boRight;
+    private Quad boLeft;
 
     public Quad(Quad upLeft, Quad upRight, Quad boRight, Quad boLeft) {
         this.upLeft = upLeft;
@@ -43,12 +45,24 @@ public class Quad {
         return active;
     }
 
+    public boolean isActive(Direction[] directions) {
+        return this.moveTroughQuadTree(directions).isActive();
+    }
+
     public void setActive() {
         active = true;
     }
 
+    public void setActive(Direction[] directions) {
+        this.moveTroughQuadTree(directions).active = true;
+    }
+
     public void setInactive() {
         active = false;
+    }
+
+    public void setInactive(Direction[] directions) {
+        this.moveTroughQuadTree(directions).active = false;
     }
 
     public void updateQuadActiveState() {
@@ -64,4 +78,31 @@ public class Quad {
 
         active = upLeft.isActive() || upRight.isActive() || boRight.isActive() || boLeft.isActive();
     }
+
+    private Quad moveTroughQuadTree(Direction[] directions) {
+        Quad tmpQuad = this;
+        for (Direction direction : directions) {
+            try {
+                switch (direction) {
+                    case NW:
+                        tmpQuad = tmpQuad.upLeft;
+                        break;
+                    case NE:
+                        tmpQuad = tmpQuad.upRight;
+                        break;
+                    case SE:
+                        tmpQuad = tmpQuad.boRight;
+                        break;
+                    case SW:
+                        tmpQuad = tmpQuad.boLeft;
+                        break;
+                }
+            } catch (NullPointerException e) {
+                break;
+            }
+        }
+
+        return tmpQuad;
+    }
+
 }
