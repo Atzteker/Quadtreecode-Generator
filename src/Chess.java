@@ -1,9 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 public class Chess extends QuadTreeFormatPanel {
     private JButton[][] chessButtons = new JButton[8][8];
@@ -29,36 +26,14 @@ public class Chess extends QuadTreeFormatPanel {
         }
     }
 
-
     @Override
     protected void updateAppearance() {
+        matchQuadAndChess(MATCHING_TYPE.QUAD_IS_BASE);
     }
 
     @Override
     protected void updateQuad() {
-        Direction[] possibleDirections = new Direction[]{Direction.NW, Direction.NE, Direction.SE, Direction.SW};
-        Direction[] tmpDirection = new Direction[3];
-        BoundariesChessArea boundariesChessArea;
-
-        for (int i = 0; i < 4; i++) {
-            tmpDirection[0] = possibleDirections[i];
-            for (int j = 0; j < 4; j++) {
-                tmpDirection[1] = possibleDirections[j];
-                for (int k = 0; k < 4; k++) {
-                    tmpDirection[2] = possibleDirections[k];
-                    boundariesChessArea = new BoundariesChessArea();
-                    boundariesChessArea.updateBoundaries(tmpDirection);
-
-                    if (chessButtons[boundariesChessArea.upperY][boundariesChessArea.upperX].getBackground() == Color.BLACK) {
-                        quad.setActive(tmpDirection);
-                    } else {
-                        quad.setInactive(tmpDirection);
-                    }
-                }
-            }
-        }
-
-        quad.updateQuadActiveState();
+        matchQuadAndChess(MATCHING_TYPE.CHESS_IS_BASE);
     }
 
     @Override
@@ -74,6 +49,50 @@ public class Chess extends QuadTreeFormatPanel {
     @Override
     protected String nameTreeFormat() {
         return "Chess";
+    }
+
+    private void matchQuadAndChess(MATCHING_TYPE matching_type) {
+        Direction[] possibleDirections = new Direction[]{Direction.NW, Direction.NE, Direction.SE, Direction.SW};
+        Direction[] tmpDirection = new Direction[3];
+        BoundariesChessArea boundariesChessArea;
+        int tmpX, tmpY;
+
+        for (int i = 0; i < 4; i++) {
+            tmpDirection[0] = possibleDirections[i];
+            for (int j = 0; j < 4; j++) {
+                tmpDirection[1] = possibleDirections[j];
+                for (int k = 0; k < 4; k++) {
+                    tmpDirection[2] = possibleDirections[k];
+
+                    boundariesChessArea = new BoundariesChessArea();
+                    boundariesChessArea.updateBoundaries(tmpDirection);
+                    tmpX = boundariesChessArea.upperX;
+                    tmpY = boundariesChessArea.upperY;
+
+                    if (matching_type == MATCHING_TYPE.CHESS_IS_BASE) {
+                        if (chessButtons[tmpY][tmpX].getBackground() == Color.BLACK) {
+                            quad.setActive(tmpDirection);
+                        } else {
+                            quad.setInactive(tmpDirection);
+                        }
+                    } else if (matching_type == MATCHING_TYPE.QUAD_IS_BASE) {
+                        if (quad.isActive(tmpDirection)) {
+                            chessButtons[tmpY][tmpX].setBackground(Color.BLACK);
+                        } else {
+                            chessButtons[tmpY][tmpX].setBackground(Color.WHITE);
+                        }
+                    }
+                }
+            }
+        }
+
+        if (matching_type == MATCHING_TYPE.CHESS_IS_BASE) {
+            quad.updateQuadActiveState();
+        }
+    }
+
+    private enum MATCHING_TYPE {
+        QUAD_IS_BASE, CHESS_IS_BASE;
     }
 
     private static class BoundariesChessArea {
