@@ -50,4 +50,18 @@ public class Quad {
     public void setInactive() {
         active = false;
     }
+
+    public void updateQuadActiveState() {
+        // updates which Quads are active and which are not
+        if (upLeft == null && upRight == null && boLeft == null && boRight == null) {
+            return;
+        }
+
+        upLeft.updateQuadActiveState();
+        upRight.updateQuadActiveState();
+        boRight.updateQuadActiveState();
+        boLeft.updateQuadActiveState();
+
+        active = upLeft.isActive() || upRight.isActive() || boRight.isActive() || boLeft.isActive();
+    }
 }
