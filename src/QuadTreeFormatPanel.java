@@ -61,7 +61,6 @@ public abstract class QuadTreeFormatPanel extends JPanel implements ActionListen
         Quad oldQuad = new Quad(quad);
         updateQuad();
         firePropertyChange(treeFormat, oldQuad, quad);
-        System.out.println("h");
     }
 
     private class QuadListener implements PropertyChangeListener {

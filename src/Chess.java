@@ -39,7 +39,12 @@ public class Chess extends QuadTreeFormatPanel {
 
     @Override
     protected void processAppearanceChange(ActionEvent e) {
-
+        JButton tmpButton = (JButton)e.getSource();
+        if (tmpButton.getBackground() == Color.WHITE){
+            tmpButton.setBackground(Color.BLACK);
+        } else {
+            tmpButton.setBackground(Color.WHITE);
+        }
     }
 
     @Override
