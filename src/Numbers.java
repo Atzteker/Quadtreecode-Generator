@@ -77,11 +77,80 @@ public class Numbers extends QuadTreeFormatPanel {
 
     @Override
     protected void processAppearanceChange(ActionEvent e) {
+        JButton actionButton = (JButton) e.getSource();
+        BUTTONS_STATE changeState;
+        if (actionButton.getForeground() == normalColor) {
+            actionButton.setForeground(highlightColor);
+            changeState = BUTTONS_STATE.MARKED;
+        } else {
+            actionButton.setForeground(normalColor);
+            changeState = BUTTONS_STATE.UNMARKED;
+        }
 
+        int i = 0;
+        for (JButton numbersButtonLayer1 : numbers1LayerButtons) {
+            if (actionButton == numbersButtonLayer1) {
+                changeStateButtons(BUTTONS_LAYER.LAYER_2, i * 4, (i + 1) * 4 - 1, changeState);
+                changeStateButtons(BUTTONS_LAYER.LAYER_3, i * 16, (i + 1) * 16 - 1, changeState);
+                return;
+            }
+            i++;
+        }
+
+        int j = 0;
+        for (JButton numbersButtonLayer2 : numbers2LayerButtons) {
+            if (actionButton == numbersButtonLayer2) {
+                changeStateButtons(BUTTONS_LAYER.LAYER_3, j * 4, (j + 1) * 4 - 1, changeState);
+                return;
+            }
+            j++;
+        }
+
+        // If there are state changes in Layer 2 or 3, their parent layer 1 and 2 must getting corrected.
+        // It's easier to do this with the function 'updateAppearance', after the quad was updated depending on layer 3
     }
 
     @Override
     protected String nameTreeFormat() {
         return "Numbers";
+    }
+
+    private void changeStateButtons(BUTTONS_LAYER layer, int fromIdx, int toIdx, BUTTONS_STATE newState) {
+        Color tmpColor;
+        if (newState == BUTTONS_STATE.MARKED) {
+            tmpColor = highlightColor;
+        } else {
+            tmpColor = normalColor;
+        }
+
+        switch (layer) {
+            case LAYER_1:
+                colorChangeForButtons(numbers1LayerButtons, tmpColor, 3, fromIdx, toIdx);
+                break;
+            case LAYER_2:
+                colorChangeForButtons(numbers2LayerButtons, tmpColor, 15, fromIdx, toIdx);
+                break;
+            case LAYER_3:
+                colorChangeForButtons(numbers3LayerButtons, tmpColor, 63, fromIdx, toIdx);
+                break;
+        }
+    }
+
+    private void colorChangeForButtons(JButton[] buttons, Color color, int maxIdx, int fromIdx, int toIdx) {
+        if (fromIdx < 0 || fromIdx > maxIdx || toIdx < 0 || toIdx > maxIdx) {
+            return;
+        }
+
+        for (int i = fromIdx; i <= toIdx; i++) {
+            buttons[i].setForeground(color);
+        }
+    }
+
+    private enum BUTTONS_STATE {
+        MARKED, UNMARKED
+    }
+
+    private enum BUTTONS_LAYER {
+        LAYER_1, LAYER_2, LAYER_3
     }
 }
