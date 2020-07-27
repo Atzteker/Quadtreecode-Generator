@@ -73,6 +73,28 @@ public class Numbers extends QuadTreeFormatPanel {
 
     @Override
     protected void updateQuad() {
+        Direction[] possibleDirections = new Direction[]{Direction.NW, Direction.NE, Direction.SE, Direction.SW};
+        Direction[] tmpDirection = new Direction[3];
+
+        int idx = 0;
+        for (int i = 0; i < 4; i++) {
+            tmpDirection[0] = possibleDirections[i];
+            for (int j = 0; j < 4; j++) {
+                tmpDirection[1] = possibleDirections[j];
+                for (int k = 0; k < 4; k++) {
+                    tmpDirection[2] = possibleDirections[k];
+                    if (numbers3LayerButtons[idx].getForeground() == highlightColor) {
+                        quad.setActive(tmpDirection);
+                    } else {
+                        quad.setInactive(tmpDirection);
+                    }
+
+                    idx++;
+                }
+            }
+        }
+
+        quad.updateQuadActiveState();
     }
 
     @Override
