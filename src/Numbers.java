@@ -69,6 +69,36 @@ public class Numbers extends QuadTreeFormatPanel {
 
     @Override
     protected void updateAppearance() {
+        Direction[] possibleDirections = new Direction[]{Direction.NW, Direction.NE, Direction.SE, Direction.SW};
+        Direction[] tmpDirectionLayer1 = new Direction[1];
+        Direction[] tmpDirectionLayer2 = new Direction[2];
+        Direction[] tmpDirectionLayer3 = new Direction[3];
+
+        for (int i = 0; i < 4; i++) {
+            tmpDirectionLayer1[0] = possibleDirections[i];
+            tmpDirectionLayer2[0] = possibleDirections[i];
+            tmpDirectionLayer3[0] = possibleDirections[i];
+            matchButtonStateAndQuadState(numbers1LayerButtons[i], tmpDirectionLayer1);
+
+            for (int j = 0; j < 4; j++) {
+                tmpDirectionLayer2[1] = possibleDirections[j];
+                tmpDirectionLayer3[1] = possibleDirections[j];
+                matchButtonStateAndQuadState(numbers2LayerButtons[i * 4 + j], tmpDirectionLayer2);
+
+                for (int k = 0; k < 4; k++) {
+                    tmpDirectionLayer3[2] = possibleDirections[k];
+                    matchButtonStateAndQuadState(numbers3LayerButtons[i * 16 + j * 4 + k], tmpDirectionLayer3);
+                }
+            }
+        }
+    }
+
+    private void matchButtonStateAndQuadState(JButton button, Direction[] quadPath) {
+        if (quad.isActive(quadPath)) {
+            button.setForeground(highlightColor);
+        } else {
+            button.setForeground(normalColor);
+        }
     }
 
     @Override
@@ -76,25 +106,23 @@ public class Numbers extends QuadTreeFormatPanel {
         Direction[] possibleDirections = new Direction[]{Direction.NW, Direction.NE, Direction.SE, Direction.SW};
         Direction[] tmpDirection = new Direction[3];
 
-        int idx = 0;
         for (int i = 0; i < 4; i++) {
             tmpDirection[0] = possibleDirections[i];
             for (int j = 0; j < 4; j++) {
                 tmpDirection[1] = possibleDirections[j];
                 for (int k = 0; k < 4; k++) {
                     tmpDirection[2] = possibleDirections[k];
-                    if (numbers3LayerButtons[idx].getForeground() == highlightColor) {
+                    if (numbers3LayerButtons[i * 16 + j * 4 + k].getForeground() == highlightColor) {
                         quad.setActive(tmpDirection);
                     } else {
                         quad.setInactive(tmpDirection);
                     }
-
-                    idx++;
                 }
             }
         }
 
         quad.updateQuadActiveState();
+        updateAppearance(); // in addition to processAppearanceChange
     }
 
     @Override
