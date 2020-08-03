@@ -32,6 +32,12 @@ public class Gui {
         c.gridx = 1;
         c.gridy = 0;
         mainPanel.add(numbers, c);
+
+        c.gridwidth = 1;
+        c.gridheight = 1;
+        c.gridx = 1;
+        c.gridy = 1;
+        mainPanel.add(new JPanel(), c);
     }
 
     public static void main(String[] args) {
