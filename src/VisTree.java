@@ -42,15 +42,25 @@ public class VisTree extends QuadTreeFormatPanel {
         JButton[] nodeButtons;
         switch (node_layer) {
             case ROOT:
+                root = new JButton();
                 initNode(root, nodePanel, nodeDimension);
                 return;
             case LAYER_1:
+                for (int i = 0; i < nodes1LayerButtons.length; i++) {
+                    nodes1LayerButtons[i] = new JButton();
+                }
                 nodeButtons = nodes1LayerButtons;
                 break;
             case LAYER_2:
+                for (int i = 0; i < nodes2LayerButtons.length; i++) {
+                    nodes2LayerButtons[i] = new JButton();
+                }
                 nodeButtons = nodes2LayerButtons;
                 break;
             case LAYER_3:
+                for (int i = 0; i < nodes3LayerButtons.length; i++) {
+                    nodes3LayerButtons[i] = new JButton();
+                }
                 nodeButtons = nodes3LayerButtons;
                 break;
             default:
@@ -63,7 +73,6 @@ public class VisTree extends QuadTreeFormatPanel {
     }
 
     private void initNode(JButton nodeButton, JPanel nodePanel, Dimension nodeDimension) {
-        nodeButton = new JButton();
         nodeButton.addActionListener(this);
         nodeButton.setBackground(normalColor);
         nodeButton.setPreferredSize(nodeDimension);
