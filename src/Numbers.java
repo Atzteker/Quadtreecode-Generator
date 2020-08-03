@@ -13,14 +13,13 @@ public class Numbers extends QuadTreeFormatPanel {
     private static Color normalColor = new Color(100, 100, 100, 50);
     private static Color highlightColor = Color.BLACK;
 
-    public Numbers() {
+    public Numbers(Dimension numberDimension) {
         JPanel firstRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         JPanel secondRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         firstRow.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         secondRow.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 
-        Dimension numberDimension = new Dimension(13, 30);
         for (int i = 0; i < 4; i++) {
             numbers1LayerButtons[i] = new JButton(String.valueOf(i + 1));
             numbers1LayerButtons[i].addActionListener(this);

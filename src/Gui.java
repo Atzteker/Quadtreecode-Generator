@@ -4,13 +4,18 @@ import java.awt.*;
 public class Gui {
     //private static Synchronizer sync = new Synchronizer();
     private static Chess chess = new Chess(new Dimension(80, 80));
-    private static Numbers numbers = new Numbers();
+    private static Numbers numbers = new Numbers(new Dimension(13,30));
+    private static VisTree visTree = new VisTree(new Dimension(13,13),4, 20);
 
     //private static Quad quad;
 
     private static void initializeListener() {
         numbers.addQuadListener(chess.getQuadListener(), numbers.getTreeFormat());
+        numbers.addQuadListener(visTree.getQuadListener(), numbers.getTreeFormat());
         chess.addQuadListener(numbers.getQuadListener(), chess.getTreeFormat());
+        chess.addQuadListener(visTree.getQuadListener(), chess.getTreeFormat());
+        visTree.addQuadListener(numbers.getQuadListener(), visTree.getTreeFormat());
+        visTree.addQuadListener(chess.getQuadListener(), visTree.getTreeFormat());
     }
 
     private static void initializeComponents(JFrame frame) {
@@ -37,7 +42,7 @@ public class Gui {
         c.gridheight = 1;
         c.gridx = 1;
         c.gridy = 1;
-        mainPanel.add(new JPanel(), c);
+        mainPanel.add(visTree, c);
     }
 
     public static void main(String[] args) {
