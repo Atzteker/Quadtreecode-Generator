@@ -68,9 +68,13 @@ public class Numbers extends QuadTreeFormatPanel {
         textArea.setEditable(false);
         secondRow.add(textArea);
 
+        firstRow.setAlignmentX(Component.LEFT_ALIGNMENT);
+        secondRow.setAlignmentX(Component.LEFT_ALIGNMENT);
         this.add(firstRow);
         this.add(secondRow);
-        this.add(Box.createRigidArea(new Dimension(0, 500)));
+
+        firstRow.setMaximumSize(firstRow.getPreferredSize());
+        secondRow.setMaximumSize(secondRow.getPreferredSize());
     }
 
     @Override

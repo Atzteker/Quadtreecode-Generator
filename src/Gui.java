@@ -4,8 +4,8 @@ import java.awt.*;
 public class Gui {
     //private static Synchronizer sync = new Synchronizer();
     private static Chess chess = new Chess(new Dimension(80, 80));
-    private static Numbers numbers = new Numbers(new Dimension(13,30));
-    private static VisTree visTree = new VisTree(new Dimension(13,13),4, 20);
+    private static Numbers numbers = new Numbers(new Dimension(13,20));
+    private static VisTree visTree = new VisTree(new Dimension(13,13),4, 100);
 
     //private static Quad quad;
 
@@ -20,14 +20,13 @@ public class Gui {
 
     private static void initializeComponents(JFrame frame) {
         JPanel mainPanel = new JPanel(new GridBagLayout());
-        frame.setContentPane(mainPanel);
         GridBagConstraints c = new GridBagConstraints();
         c.weightx = 1;
         c.weighty = 1;
         c.fill = GridBagConstraints.BOTH;
 
         c.gridwidth = 1;
-        c.gridheight = 2;
+        c.gridheight = 4;
         c.gridx = 0;
         c.gridy = 0;
         mainPanel.add(chess, c);
@@ -39,10 +38,12 @@ public class Gui {
         mainPanel.add(numbers, c);
 
         c.gridwidth = 1;
-        c.gridheight = 1;
+        c.gridheight = 3;
         c.gridx = 1;
         c.gridy = 1;
         mainPanel.add(visTree, c);
+
+        frame.setContentPane(mainPanel);
     }
 
     public static void main(String[] args) {

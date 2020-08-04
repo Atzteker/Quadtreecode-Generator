@@ -17,10 +17,10 @@ public class VisTree extends QuadTreeFormatPanel {
         int secondLayerGap = (smallestGap + nodeDimension.width) * 4 - nodeDimension.width;
         int firstLayerGap = (secondLayerGap + nodeDimension.width) * 4 - nodeDimension.width;
 
-        JPanel rootLayer = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, verticalGap));
-        JPanel firstLayer = new JPanel(new FlowLayout(FlowLayout.CENTER, firstLayerGap, verticalGap));
-        JPanel secondLayer = new JPanel(new FlowLayout(FlowLayout.CENTER, secondLayerGap, verticalGap));
-        JPanel thirdLayer = new JPanel(new FlowLayout(FlowLayout.CENTER, smallestGap, verticalGap));
+        JPanel rootLayer = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+        JPanel firstLayer = new JPanel(new FlowLayout(FlowLayout.CENTER, firstLayerGap, 0));
+        JPanel secondLayer = new JPanel(new FlowLayout(FlowLayout.CENTER, secondLayerGap, 0));
+        JPanel thirdLayer = new JPanel(new FlowLayout(FlowLayout.CENTER, smallestGap, 0));
 
         rootLayer.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         firstLayer.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
@@ -32,10 +32,20 @@ public class VisTree extends QuadTreeFormatPanel {
         initNodes(NODE_LAYER.LAYER_2, secondLayer, nodeDimension);
         initNodes(NODE_LAYER.LAYER_3, thirdLayer, nodeDimension);
 
+        this.add(Box.createRigidArea(new Dimension(0, 10)));
         this.add(rootLayer);
+        this.add(Box.createRigidArea(new Dimension(0, verticalGap)));
         this.add(firstLayer);
+        this.add(Box.createRigidArea(new Dimension(0, verticalGap)));
         this.add(secondLayer);
+        this.add(Box.createRigidArea(new Dimension(0, verticalGap)));
         this.add(thirdLayer);
+        this.add(Box.createRigidArea(new Dimension(0, 10)));
+
+        rootLayer.setMaximumSize(rootLayer.getPreferredSize());
+        firstLayer.setMaximumSize(firstLayer.getPreferredSize());
+        secondLayer.setMaximumSize(secondLayer.getPreferredSize());
+        thirdLayer.setMaximumSize(thirdLayer.getPreferredSize());
     }
 
     private void initNodes(NODE_LAYER node_layer, JPanel nodePanel, Dimension nodeDimension) {
@@ -80,8 +90,23 @@ public class VisTree extends QuadTreeFormatPanel {
     }
 
     @Override
-    protected void updateAppearance() {
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
 
+        /*Point dim = root.getParent().getLocation();
+        Point dim2 = root.getLocation();
+        Point di3 = nodes1LayerButtons[0].getParent().getLocation();
+        Point dim4 = nodes1LayerButtons[0].getLocation();
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setColor(Color.blue);
+        g2d.drawLine(dim.x + dim2.x + root.getWidth()/2, dim.y + dim2.y + root.getHeight(), di3.x + dim4.x + nodes1LayerButtons[0].getWidth()/2, di3.y + dim4.y);
+        g2d.drawOval(dim.x + dim2.x + root.getWidth()/2, dim.y + dim2.y + root.getHeight(),50,50);*/
+    }
+
+    @Override
+    protected void updateAppearance() {
+        System.out.println();
+        repaint();
     }
 
     @Override
