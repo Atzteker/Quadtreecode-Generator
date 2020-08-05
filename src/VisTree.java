@@ -10,6 +10,8 @@ public class VisTree extends QuadTreeFormatPanel {
 
     private static Color normalColor = new Color(100, 100, 100, 10);
     private static Color highlightColor = Color.BLACK;
+    private static Color normalColorLine = new Color(0, 44, 138, 10);
+    private static Color highlightColorLine = new Color(0, 44, 138);
 
     public VisTree(Dimension nodeDimension, int smallestGap, int verticalGap) {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -89,18 +91,54 @@ public class VisTree extends QuadTreeFormatPanel {
         nodePanel.add(nodeButton);
     }
 
+    private void paintConnections(Graphics g, JButton[] source, JButton[] destination) {
+        Graphics2D g2d = (Graphics2D) g;
+
+        Point tmpSrcPosition;
+        Point tmpDstPosition;
+        int i = 0;
+        for (JButton sourceButton : source) {
+            tmpSrcPosition = calcNodePositionAsSource(sourceButton);
+
+            if (sourceButton.getBackground() == normalColor) {
+                g2d.setColor(normalColorLine);
+            } else {
+                g2d.setColor(highlightColorLine);
+            }
+
+            for (int j = 0; j < 4; j++) {
+                tmpDstPosition = calcNodePositionAsDestination(destination[i * 4 + j]);
+                g2d.drawLine(tmpSrcPosition.x, tmpSrcPosition.y, tmpDstPosition.x, tmpDstPosition.y);
+            }
+
+            i++;
+        }
+
+    }
+
+    private Point calcNodePositionAsSource(JButton source) {
+        Point positionButtonRelative = source.getLocation();
+        Point sourcePosition = source.getParent().getLocation();
+        sourcePosition.translate(positionButtonRelative.x, positionButtonRelative.y);
+        sourcePosition.translate(source.getWidth() / 2, source.getHeight());
+
+        return sourcePosition;
+    }
+
+    private Point calcNodePositionAsDestination(JButton dest) {
+        Point destPosition = calcNodePositionAsSource(dest);
+        destPosition.translate(0, -dest.getHeight());
+
+        return destPosition;
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        /*Point dim = root.getParent().getLocation();
-        Point dim2 = root.getLocation();
-        Point di3 = nodes1LayerButtons[0].getParent().getLocation();
-        Point dim4 = nodes1LayerButtons[0].getLocation();
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(Color.blue);
-        g2d.drawLine(dim.x + dim2.x + root.getWidth()/2, dim.y + dim2.y + root.getHeight(), di3.x + dim4.x + nodes1LayerButtons[0].getWidth()/2, di3.y + dim4.y);
-        g2d.drawOval(dim.x + dim2.x + root.getWidth()/2, dim.y + dim2.y + root.getHeight(),50,50);*/
+        paintConnections(g, new JButton[]{root}, nodes1LayerButtons);
+        paintConnections(g, nodes1LayerButtons, nodes2LayerButtons);
+        paintConnections(g, nodes2LayerButtons, nodes3LayerButtons);
     }
 
     @Override
