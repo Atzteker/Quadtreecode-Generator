@@ -25,4 +25,4 @@ hs_err_pid*
 #Intellij
 *.iml
 .idea/
-.MF
+*.MF
