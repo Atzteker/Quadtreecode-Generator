@@ -143,8 +143,44 @@ public class VisTree extends QuadTreeFormatPanel {
 
     @Override
     protected void updateAppearance() {
-        System.out.println();
+        Direction[] possibleDirections = new Direction[]{Direction.NW, Direction.NE, Direction.SE, Direction.SW};
+        Direction[] tmpDirectionLayer1 = new Direction[1];
+        Direction[] tmpDirectionLayer2 = new Direction[2];
+        Direction[] tmpDirectionLayer3 = new Direction[3];
+
+        if (quad.isActive()) {
+            root.setBackground(highlightColor);
+        } else {
+            root.setBackground(normalColor);
+        }
+
+        for (int i = 0; i < 4; i++) {
+            tmpDirectionLayer1[0] = possibleDirections[i];
+            tmpDirectionLayer2[0] = possibleDirections[i];
+            tmpDirectionLayer3[0] = possibleDirections[i];
+            matchButtonStateAndQuadState(nodes1LayerButtons[i], tmpDirectionLayer1);
+
+            for (int j = 0; j < 4; j++) {
+                tmpDirectionLayer2[1] = possibleDirections[j];
+                tmpDirectionLayer3[1] = possibleDirections[j];
+                matchButtonStateAndQuadState(nodes2LayerButtons[i * 4 + j], tmpDirectionLayer2);
+
+                for (int k = 0; k < 4; k++) {
+                    tmpDirectionLayer3[2] = possibleDirections[k];
+                    matchButtonStateAndQuadState(nodes3LayerButtons[i * 16 + j * 4 + k], tmpDirectionLayer3);
+                }
+            }
+        }
+
         repaint();
+    }
+
+    private void matchButtonStateAndQuadState(JButton node, Direction[] quadPath) {
+        if (quad.isActive(quadPath)) {
+            node.setBackground(highlightColor);
+        } else {
+            node.setBackground(normalColor);
+        }
     }
 
     @Override
@@ -168,6 +204,7 @@ public class VisTree extends QuadTreeFormatPanel {
         }
 
         quad.updateQuadActiveState();
+        updateAppearance();
     }
 
     @Override
