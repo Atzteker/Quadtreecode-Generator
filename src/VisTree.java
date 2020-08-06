@@ -149,7 +149,25 @@ public class VisTree extends QuadTreeFormatPanel {
 
     @Override
     protected void updateQuad() {
+        Direction[] possibleDirections = new Direction[]{Direction.NW, Direction.NE, Direction.SE, Direction.SW};
+        Direction[] tmpDirection = new Direction[3];
 
+        for (int i = 0; i < 4; i++) {
+            tmpDirection[0] = possibleDirections[i];
+            for (int j = 0; j < 4; j++) {
+                tmpDirection[1] = possibleDirections[j];
+                for (int k = 0; k < 4; k++) {
+                    tmpDirection[2] = possibleDirections[k];
+                    if (nodes3LayerButtons[i * 16 + j * 4 + k].getBackground() == highlightColor) {
+                        quad.setActive(tmpDirection);
+                    } else {
+                        quad.setInactive(tmpDirection);
+                    }
+                }
+            }
+        }
+
+        quad.updateQuadActiveState();
     }
 
     @Override
