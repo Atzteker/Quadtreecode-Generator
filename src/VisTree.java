@@ -154,7 +154,55 @@ public class VisTree extends QuadTreeFormatPanel {
 
     @Override
     protected void processAppearanceChange(ActionEvent e) {
+        JButton actionNode = (JButton) e.getSource();
+        NODE_STATE newNodeState;
 
+        if (actionNode.getBackground() == normalColor) {
+            actionNode.setBackground(highlightColor);
+            newNodeState = NODE_STATE.ACTIVE;
+        } else {
+            actionNode.setBackground(normalColor);
+            newNodeState = NODE_STATE.INACTIVE;
+        }
+
+        if (actionNode == root) {
+            setNodesState(nodes1LayerButtons, 0, 3, newNodeState);
+            setNodesState(nodes2LayerButtons, 0, 15, newNodeState);
+            setNodesState(nodes3LayerButtons, 0, 63, newNodeState);
+            return;
+        }
+
+        int i = 0;
+        for (JButton nodeLayer1 : nodes1LayerButtons) {
+            if (nodeLayer1 == actionNode) {
+                setNodesState(nodes2LayerButtons, i * 4, (i + 1) * 4 - 1, newNodeState);
+                setNodesState(nodes3LayerButtons, i * 16, (i + 1) * 16 - 1, newNodeState);
+            }
+            i++;
+        }
+
+        int j = 0;
+        for (JButton nodeLayer2 : nodes2LayerButtons) {
+            if (nodeLayer2 == actionNode) {
+                setNodesState(nodes3LayerButtons, j * 4, (j + 1) * 4 - 1, newNodeState);
+            }
+            j++;
+        }
+        repaint();
+
+        // If there are state changes in Layer 1, 2 or 3, their parent layer 2 and 1 and root must getting corrected.
+        // It's easier to do this with the function 'updateAppearance', after the quad was updated depending on layer 3
+    }
+
+    private void setNodesState(JButton[] nodeLayer, int fromIdx, int toIdx, NODE_STATE node_state) {
+        for (int i = fromIdx; i <= toIdx; i++) {
+            if (node_state == NODE_STATE.ACTIVE) {
+                nodeLayer[i].setBackground(highlightColor);
+            } else {
+                nodeLayer[i].setBackground(normalColor);
+            }
+
+        }
     }
 
     @Override
@@ -164,5 +212,9 @@ public class VisTree extends QuadTreeFormatPanel {
 
     private enum NODE_LAYER {
         ROOT, LAYER_1, LAYER_2, LAYER_3
+    }
+
+    private enum NODE_STATE {
+        ACTIVE, INACTIVE
     }
 }
