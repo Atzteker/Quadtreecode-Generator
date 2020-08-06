@@ -4,8 +4,8 @@ import java.awt.*;
 public class Gui {
     //private static Synchronizer sync = new Synchronizer();
     private static Chess chess = new Chess(new Dimension(70, 70));
-    private static Numbers numbers = new Numbers(new Dimension(13,20));
-    private static VisTree visTree = new VisTree(new Dimension(13,13),4, 100);
+    private static Numbers numbers = new Numbers(new Dimension(13, 20), new Color(100, 100, 100, 50), Color.BLACK);
+    private static VisTree visTree = new VisTree(new Dimension(13, 13), 4, 100);
 
     //private static Quad quad;
 

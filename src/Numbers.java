@@ -10,71 +10,52 @@ public class Numbers extends QuadTreeFormatPanel {
     private JButton[] numbers3LayerButtons = new JButton[64];
     private JTextArea textArea = new JTextArea(1, 90);
 
-    private static Color normalColor = new Color(100, 100, 100, 50);
-    private static Color highlightColor = Color.BLACK;
+    private Color normalColor;
+    private Color highlightColor;
 
-    public Numbers(Dimension numberDimension) {
+    public Numbers(Dimension numberDimension, Color normalColor, Color highlightColor) {
+        this.normalColor = normalColor;
+        this.highlightColor = highlightColor;
+
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
         JPanel firstRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         JPanel secondRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         firstRow.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+        firstRow.setAlignmentX(Component.LEFT_ALIGNMENT);
         secondRow.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+        secondRow.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        for (int i = 0; i < 4; i++) {
-            numbers1LayerButtons[i] = new JButton(String.valueOf(i + 1));
-            numbers1LayerButtons[i].addActionListener(this);
-            numbers1LayerButtons[i].setPreferredSize(numberDimension);
-            numbers1LayerButtons[i].setContentAreaFilled(false);
-            numbers1LayerButtons[i].setBorderPainted(false);
-            numbers1LayerButtons[i].setMargin(new Insets(0, 0, 0, 0));
-            numbers1LayerButtons[i].setForeground(normalColor);
-            firstRow.add(numbers1LayerButtons[i]);
-        }
-
+        initNumbersLayer(numberDimension, firstRow, numbers1LayerButtons);
         firstRow.add(new JLabel("|"));
-
-        for (int i = 0; i < 16; i++) {
-            numbers2LayerButtons[i] = new JButton(String.valueOf((i % 4) + 1));
-            numbers2LayerButtons[i].addActionListener(this);
-            numbers2LayerButtons[i].setPreferredSize(numberDimension);
-            numbers2LayerButtons[i].setContentAreaFilled(false);
-            numbers2LayerButtons[i].setBorderPainted(false);
-            numbers2LayerButtons[i].setMargin(new Insets(0, 0, 0, 0));
-            numbers2LayerButtons[i].setForeground(normalColor);
-            firstRow.add(numbers2LayerButtons[i]);
-
-            if ((i + 1) % 4 == 0 && i + 1 != 16) {
-                firstRow.add(new JLabel("-"));
-            }
-        }
-
+        initNumbersLayer(numberDimension, firstRow, numbers2LayerButtons);
         firstRow.add(new JLabel("|"));
-
-        for (int i = 0; i < 64; i++) {
-            numbers3LayerButtons[i] = new JButton(String.valueOf((i % 4) + 1));
-            numbers3LayerButtons[i].addActionListener(this);
-            numbers3LayerButtons[i].setPreferredSize(numberDimension);
-            numbers3LayerButtons[i].setContentAreaFilled(false);
-            numbers3LayerButtons[i].setBorderPainted(false);
-            numbers3LayerButtons[i].setMargin(new Insets(0, 0, 0, 0));
-            numbers3LayerButtons[i].setForeground(normalColor);
-            firstRow.add(numbers3LayerButtons[i]);
-
-            if ((i + 1) % 4 == 0 && i + 1 != 64) {
-                firstRow.add(new JLabel("-"));
-            }
-        }
+        initNumbersLayer(numberDimension, firstRow, numbers3LayerButtons);
 
         textArea.setEditable(false);
         secondRow.add(textArea);
 
-        firstRow.setAlignmentX(Component.LEFT_ALIGNMENT);
-        secondRow.setAlignmentX(Component.LEFT_ALIGNMENT);
         this.add(firstRow);
         this.add(secondRow);
-
         firstRow.setMaximumSize(firstRow.getPreferredSize());
         secondRow.setMaximumSize(secondRow.getPreferredSize());
+    }
+
+    private void initNumbersLayer(Dimension numberDimension, JPanel row, JButton[] numbersLayerButtons) {
+        for (int i = 0; i < numbersLayerButtons.length; i++) {
+            numbersLayerButtons[i] = new JButton(String.valueOf((i % 4) + 1));
+            numbersLayerButtons[i].addActionListener(this);
+            numbersLayerButtons[i].setPreferredSize(numberDimension);
+            numbersLayerButtons[i].setContentAreaFilled(false);
+            numbersLayerButtons[i].setBorderPainted(false);
+            numbersLayerButtons[i].setMargin(new Insets(0, 0, 0, 0));
+            numbersLayerButtons[i].setForeground(normalColor);
+            row.add(numbersLayerButtons[i]);
+
+            if ((i + 1) % 4 == 0 && i + 1 != numbersLayerButtons.length) {
+                row.add(new JLabel("-"));
+            }
+        }
     }
 
     @Override
