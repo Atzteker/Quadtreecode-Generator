@@ -169,6 +169,7 @@ public class VisTree extends QuadTreeFormatPanel {
             setNodesState(nodes1LayerButtons, 0, 3, newNodeState);
             setNodesState(nodes2LayerButtons, 0, 15, newNodeState);
             setNodesState(nodes3LayerButtons, 0, 63, newNodeState);
+            repaint();
             return;
         }
 
@@ -177,6 +178,8 @@ public class VisTree extends QuadTreeFormatPanel {
             if (nodeLayer1 == actionNode) {
                 setNodesState(nodes2LayerButtons, i * 4, (i + 1) * 4 - 1, newNodeState);
                 setNodesState(nodes3LayerButtons, i * 16, (i + 1) * 16 - 1, newNodeState);
+                repaint();
+                return;
             }
             i++;
         }
@@ -185,10 +188,12 @@ public class VisTree extends QuadTreeFormatPanel {
         for (JButton nodeLayer2 : nodes2LayerButtons) {
             if (nodeLayer2 == actionNode) {
                 setNodesState(nodes3LayerButtons, j * 4, (j + 1) * 4 - 1, newNodeState);
+                repaint();
+                return;
             }
             j++;
         }
-        repaint();
+
 
         // If there are state changes in Layer 1, 2 or 3, their parent layer 2 and 1 and root must getting corrected.
         // It's easier to do this with the function 'updateAppearance', after the quad was updated depending on layer 3
