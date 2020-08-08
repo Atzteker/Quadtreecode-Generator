@@ -168,11 +168,7 @@ public class VisTree extends QuadTreeFormatPanel {
                 tmpDirection[1] = possibleDirections[j];
                 for (int k = 0; k < 4; k++) {
                     tmpDirection[2] = possibleDirections[k];
-                    if (NODE_LAYER.LAYER_3.nodeLayerArray[i * 16 + j * 4 + k].getBackground() == highlightColor) {
-                        quad.setActive(tmpDirection);
-                    } else {
-                        quad.setInactive(tmpDirection);
-                    }
+                    changeQuadStateDependingOnColor(NODE_LAYER.LAYER_3.nodeLayerArray[i * 16 + j * 4 + k].getBackground(), tmpDirection);
                 }
             }
         }

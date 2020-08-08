@@ -92,11 +92,7 @@ public class Numbers extends QuadTreeFormatPanel {
                 tmpDirection[1] = possibleDirections[j];
                 for (int k = 0; k < 4; k++) {
                     tmpDirection[2] = possibleDirections[k];
-                    if (BUTTONS_LAYER.LAYER_3.buttonsLayerArray[i * 16 + j * 4 + k].getForeground() == highlightColor) {
-                        quad.setActive(tmpDirection);
-                    } else {
-                        quad.setInactive(tmpDirection);
-                    }
+                    changeQuadStateDependingOnColor(BUTTONS_LAYER.LAYER_3.buttonsLayerArray[i * 16 + j * 4 + k].getForeground(), tmpDirection);
                 }
             }
         }
