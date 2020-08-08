@@ -4,8 +4,12 @@ import java.awt.event.ActionEvent;
 
 public class Chess extends QuadTreeFormatPanel {
     private JButton[][] chessButtons = new JButton[8][8];
+    private Color normalColor;
+    private Color highlightColor;
 
-    public Chess(Dimension chessFieldDimension) {
+    public Chess(Dimension chessFieldDimension, Color normalColor, Color highlightColor) {
+        this.normalColor = normalColor;
+        this.highlightColor = highlightColor;
         this.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.weightx = 1;
@@ -15,7 +19,7 @@ public class Chess extends QuadTreeFormatPanel {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 chessButtons[i][j] = new JButton();
-                chessButtons[i][j].setBackground(Color.WHITE);
+                chessButtons[i][j].setBackground(normalColor);
                 chessButtons[i][j].addActionListener(this);
                 chessButtons[i][j].setPreferredSize(chessFieldDimension);
 
@@ -39,10 +43,10 @@ public class Chess extends QuadTreeFormatPanel {
     @Override
     protected void processAppearanceChange(ActionEvent e) {
         JButton tmpButton = (JButton) e.getSource();
-        if (tmpButton.getBackground() == Color.WHITE) {
-            tmpButton.setBackground(Color.BLACK);
+        if (tmpButton.getBackground() == normalColor) {
+            tmpButton.setBackground(highlightColor);
         } else {
-            tmpButton.setBackground(Color.WHITE);
+            tmpButton.setBackground(normalColor);
         }
     }
 
@@ -70,16 +74,16 @@ public class Chess extends QuadTreeFormatPanel {
                     tmpY = boundariesChessArea.upperY;
 
                     if (matching_type == MATCHING_TYPE.CHESS_IS_BASE) {
-                        if (chessButtons[tmpY][tmpX].getBackground() == Color.BLACK) {
+                        if (chessButtons[tmpY][tmpX].getBackground() == highlightColor) {
                             quad.setActive(tmpDirection);
                         } else {
                             quad.setInactive(tmpDirection);
                         }
                     } else if (matching_type == MATCHING_TYPE.QUAD_IS_BASE) {
                         if (quad.isActive(tmpDirection)) {
-                            chessButtons[tmpY][tmpX].setBackground(Color.BLACK);
+                            chessButtons[tmpY][tmpX].setBackground(highlightColor);
                         } else {
-                            chessButtons[tmpY][tmpX].setBackground(Color.WHITE);
+                            chessButtons[tmpY][tmpX].setBackground(normalColor);
                         }
                     }
                 }
