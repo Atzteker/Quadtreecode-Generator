@@ -7,6 +7,8 @@ import java.beans.PropertyChangeListener;
 import java.util.prefs.PreferenceChangeListener;
 
 public abstract class QuadTreeFormatPanel extends JPanel implements ActionListener {
+    protected final Direction[] POSSIBLE_DIRECTIONS = new Direction[]{Direction.NW, Direction.NE, Direction.SE, Direction.SW};
+    protected final int NUMBER_OF_DIRECTIONS = 4;
     protected Quad quad;
     protected String treeFormat = nameTreeFormat();
     protected PropertyChangeListener quadListener = new QuadListener();

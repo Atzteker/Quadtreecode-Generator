@@ -53,17 +53,16 @@ public class Chess extends QuadTreeFormatPanel {
     }
 
     private void matchQuadAndChess(MATCHING_TYPE matching_type) {
-        Direction[] possibleDirections = new Direction[]{Direction.NW, Direction.NE, Direction.SE, Direction.SW};
         Direction[] tmpDirection = new Direction[3];
         BoundariesChessArea boundariesChessArea;
         int tmpX, tmpY;
 
-        for (int i = 0; i < 4; i++) {
-            tmpDirection[0] = possibleDirections[i];
-            for (int j = 0; j < 4; j++) {
-                tmpDirection[1] = possibleDirections[j];
-                for (int k = 0; k < 4; k++) {
-                    tmpDirection[2] = possibleDirections[k];
+        for (int i = 0; i < NUMBER_OF_DIRECTIONS; i++) {
+            tmpDirection[0] = POSSIBLE_DIRECTIONS[i];
+            for (int j = 0; j < NUMBER_OF_DIRECTIONS; j++) {
+                tmpDirection[1] = POSSIBLE_DIRECTIONS[j];
+                for (int k = 0; k < NUMBER_OF_DIRECTIONS; k++) {
+                    tmpDirection[2] = POSSIBLE_DIRECTIONS[k];
 
                     boundariesChessArea = new BoundariesChessArea();
                     boundariesChessArea.updateBoundaries(tmpDirection);

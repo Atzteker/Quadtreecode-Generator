@@ -43,7 +43,7 @@ public class Numbers extends QuadTreeFormatPanel {
 
     private void initNumbersLayer(Dimension numberDimension, JPanel row, BUTTONS_LAYER buttonsLayer) {
         for (int i = 0; i < buttonsLayer.buttonsLayerArray.length; i++) {
-            buttonsLayer.buttonsLayerArray[i] = new JButton(String.valueOf((i % 4) + 1));
+            buttonsLayer.buttonsLayerArray[i] = new JButton(String.valueOf((i % NUMBER_OF_DIRECTIONS) + 1));
             buttonsLayer.buttonsLayerArray[i].addActionListener(this);
             buttonsLayer.buttonsLayerArray[i].setPreferredSize(numberDimension);
             buttonsLayer.buttonsLayerArray[i].setContentAreaFilled(false);
@@ -52,7 +52,7 @@ public class Numbers extends QuadTreeFormatPanel {
             buttonsLayer.buttonsLayerArray[i].setForeground(normalColor);
             row.add(buttonsLayer.buttonsLayerArray[i]);
 
-            if ((i + 1) % 4 == 0 && i + 1 != buttonsLayer.buttonsLayerArray.length) {
+            if ((i + 1) % NUMBER_OF_DIRECTIONS == 0 && i + 1 != buttonsLayer.buttonsLayerArray.length) {
                 row.add(new JLabel("-"));
             }
         }
@@ -63,15 +63,15 @@ public class Numbers extends QuadTreeFormatPanel {
         Direction[] possibleDirections = new Direction[]{Direction.NW, Direction.NE, Direction.SE, Direction.SW};
         Direction[] tmpDirection = new Direction[3];
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < NUMBER_OF_DIRECTIONS; i++) {
             tmpDirection[0] = possibleDirections[i];
             BUTTONS_LAYER.LAYER_1.buttonsLayerArray[i].setForeground(colorDependingOnQuadState(Arrays.copyOfRange(tmpDirection, 0, 1)));
 
-            for (int j = 0; j < 4; j++) {
+            for (int j = 0; j < NUMBER_OF_DIRECTIONS; j++) {
                 tmpDirection[1] = possibleDirections[j];
                 BUTTONS_LAYER.LAYER_2.buttonsLayerArray[i * 4 + j].setForeground(colorDependingOnQuadState(Arrays.copyOfRange(tmpDirection, 0, 2)));
 
-                for (int k = 0; k < 4; k++) {
+                for (int k = 0; k < NUMBER_OF_DIRECTIONS; k++) {
                     tmpDirection[2] = possibleDirections[k];
                     BUTTONS_LAYER.LAYER_3.buttonsLayerArray[i * 16 + j * 4 + k].setForeground(colorDependingOnQuadState(tmpDirection));
                 }
@@ -83,15 +83,14 @@ public class Numbers extends QuadTreeFormatPanel {
 
     @Override
     protected void updateQuad() {
-        Direction[] possibleDirections = new Direction[]{Direction.NW, Direction.NE, Direction.SE, Direction.SW};
         Direction[] tmpDirection = new Direction[3];
 
-        for (int i = 0; i < 4; i++) {
-            tmpDirection[0] = possibleDirections[i];
-            for (int j = 0; j < 4; j++) {
-                tmpDirection[1] = possibleDirections[j];
-                for (int k = 0; k < 4; k++) {
-                    tmpDirection[2] = possibleDirections[k];
+        for (int i = 0; i < NUMBER_OF_DIRECTIONS; i++) {
+            tmpDirection[0] = POSSIBLE_DIRECTIONS[i];
+            for (int j = 0; j < NUMBER_OF_DIRECTIONS; j++) {
+                tmpDirection[1] = POSSIBLE_DIRECTIONS[j];
+                for (int k = 0; k < NUMBER_OF_DIRECTIONS; k++) {
+                    tmpDirection[2] = POSSIBLE_DIRECTIONS[k];
                     changeQuadStateDependingOnColor(BUTTONS_LAYER.LAYER_3.buttonsLayerArray[i * 16 + j * 4 + k].getForeground(), tmpDirection);
                 }
             }
@@ -163,7 +162,7 @@ public class Numbers extends QuadTreeFormatPanel {
                 myMind++;
             }
 
-            if (i % 4 == 0 && myMind != 0) {
+            if (i % NUMBER_OF_DIRECTIONS == 0 && myMind != 0) {
                 String textAreaContent = textArea.getText();
                 char lastSign = textAreaContent.toCharArray()[textAreaContent.length() - 1];
                 if (i == 4 || lastSign == ' ') {

@@ -30,7 +30,7 @@ public class VisTree extends QuadTreeFormatPanel {
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        int secondLayerGap = (smallestGap + nodeDimension.width) * 4 - nodeDimension.width;
+        int secondLayerGap = (smallestGap + nodeDimension.width) * NUMBER_OF_DIRECTIONS - nodeDimension.width;
         int firstLayerGap = (secondLayerGap + nodeDimension.width) * 4 - nodeDimension.width;
 
         JPanel rootLayer = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
@@ -99,7 +99,7 @@ public class VisTree extends QuadTreeFormatPanel {
             }
 
             for (int j = 0; j < 4; j++) {
-                tmpDstPosition = calcNodePositionAsDestination(destination[i * 4 + j]);
+                tmpDstPosition = calcNodePositionAsDestination(destination[i * NUMBER_OF_DIRECTIONS + j]);
                 g2d.drawLine(tmpSrcPosition.x, tmpSrcPosition.y, tmpDstPosition.x, tmpDstPosition.y);
             }
 
@@ -134,21 +134,20 @@ public class VisTree extends QuadTreeFormatPanel {
 
     @Override
     protected void updateAppearance() {
-        Direction[] possibleDirections = new Direction[]{Direction.NW, Direction.NE, Direction.SE, Direction.SW};
         Direction[] tmpDirection = new Direction[3];
 
         NODE_LAYER.ROOT.singleNode.setBackground(colorDependingOnQuadState(null));
 
-        for (int i = 0; i < 4; i++) {
-            tmpDirection[0] = possibleDirections[i];
+        for (int i = 0; i < NUMBER_OF_DIRECTIONS; i++) {
+            tmpDirection[0] = POSSIBLE_DIRECTIONS[i];
             NODE_LAYER.LAYER_1.nodeLayerArray[i].setBackground(colorDependingOnQuadState(Arrays.copyOfRange(tmpDirection, 0, 1)));
 
-            for (int j = 0; j < 4; j++) {
-                tmpDirection[1] = possibleDirections[j];
+            for (int j = 0; j < NUMBER_OF_DIRECTIONS; j++) {
+                tmpDirection[1] = POSSIBLE_DIRECTIONS[j];
                 NODE_LAYER.LAYER_2.nodeLayerArray[i * 4 + j].setBackground(colorDependingOnQuadState(Arrays.copyOfRange(tmpDirection, 0, 2)));
 
-                for (int k = 0; k < 4; k++) {
-                    tmpDirection[2] = possibleDirections[k];
+                for (int k = 0; k < NUMBER_OF_DIRECTIONS; k++) {
+                    tmpDirection[2] = POSSIBLE_DIRECTIONS[k];
                     NODE_LAYER.LAYER_3.nodeLayerArray[i * 16 + j * 4 + k].setBackground(colorDependingOnQuadState(tmpDirection));
                 }
             }
@@ -159,15 +158,14 @@ public class VisTree extends QuadTreeFormatPanel {
 
     @Override
     protected void updateQuad() {
-        Direction[] possibleDirections = new Direction[]{Direction.NW, Direction.NE, Direction.SE, Direction.SW};
         Direction[] tmpDirection = new Direction[3];
 
-        for (int i = 0; i < 4; i++) {
-            tmpDirection[0] = possibleDirections[i];
-            for (int j = 0; j < 4; j++) {
-                tmpDirection[1] = possibleDirections[j];
-                for (int k = 0; k < 4; k++) {
-                    tmpDirection[2] = possibleDirections[k];
+        for (int i = 0; i < NUMBER_OF_DIRECTIONS; i++) {
+            tmpDirection[0] = POSSIBLE_DIRECTIONS[i];
+            for (int j = 0; j < NUMBER_OF_DIRECTIONS; j++) {
+                tmpDirection[1] = POSSIBLE_DIRECTIONS[j];
+                for (int k = 0; k < NUMBER_OF_DIRECTIONS; k++) {
+                    tmpDirection[2] = POSSIBLE_DIRECTIONS[k];
                     changeQuadStateDependingOnColor(NODE_LAYER.LAYER_3.nodeLayerArray[i * 16 + j * 4 + k].getBackground(), tmpDirection);
                 }
             }
