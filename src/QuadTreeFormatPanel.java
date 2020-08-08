@@ -49,6 +49,14 @@ public abstract class QuadTreeFormatPanel extends JPanel implements ActionListen
     }
 
     protected Color colorDependingOnQuadState(Direction[] directions){
+        if (directions == null){
+            if (quad.isActive()){
+                return highlightColor;
+            }else {
+                return normalColor;
+            }
+        }
+
         if (quad.isActive(directions)){
             return highlightColor;
         }else {
