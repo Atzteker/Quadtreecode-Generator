@@ -6,9 +6,14 @@ import java.beans.PropertyChangeListener;
 import java.util.Arrays;
 
 public class Numbers extends QuadTreeFormatPanel {
-    private JButton[] numbers1LayerButtons = new JButton[4];
-    private JButton[] numbers2LayerButtons = new JButton[16];
-    private JButton[] numbers3LayerButtons = new JButton[64];
+    private enum BUTTONS_LAYER {
+        LAYER_1(4), LAYER_2(16), LAYER_3(64);
+        public JButton[] buttonsLayerArray;
+
+        BUTTONS_LAYER(int amount) {
+            this.buttonsLayerArray = new JButton[amount];
+        }
+    }
     private JTextArea textArea = new JTextArea(1, 90);
 
     private Color normalColor;
@@ -27,11 +32,11 @@ public class Numbers extends QuadTreeFormatPanel {
         secondRow.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         secondRow.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        initNumbersLayer(numberDimension, firstRow, numbers1LayerButtons);
+        initNumbersLayer(numberDimension, firstRow, BUTTONS_LAYER.LAYER_1);
         firstRow.add(new JLabel("|"));
-        initNumbersLayer(numberDimension, firstRow, numbers2LayerButtons);
+        initNumbersLayer(numberDimension, firstRow, BUTTONS_LAYER.LAYER_2);
         firstRow.add(new JLabel("|"));
-        initNumbersLayer(numberDimension, firstRow, numbers3LayerButtons);
+        initNumbersLayer(numberDimension, firstRow, BUTTONS_LAYER.LAYER_3);
 
         textArea.setEditable(false);
         secondRow.add(textArea);
@@ -42,18 +47,18 @@ public class Numbers extends QuadTreeFormatPanel {
         secondRow.setMaximumSize(secondRow.getPreferredSize());
     }
 
-    private void initNumbersLayer(Dimension numberDimension, JPanel row, JButton[] numbersLayerButtons) {
-        for (int i = 0; i < numbersLayerButtons.length; i++) {
-            numbersLayerButtons[i] = new JButton(String.valueOf((i % 4) + 1));
-            numbersLayerButtons[i].addActionListener(this);
-            numbersLayerButtons[i].setPreferredSize(numberDimension);
-            numbersLayerButtons[i].setContentAreaFilled(false);
-            numbersLayerButtons[i].setBorderPainted(false);
-            numbersLayerButtons[i].setMargin(new Insets(0, 0, 0, 0));
-            numbersLayerButtons[i].setForeground(normalColor);
-            row.add(numbersLayerButtons[i]);
+    private void initNumbersLayer(Dimension numberDimension, JPanel row, BUTTONS_LAYER buttonsLayer) {
+        for (int i = 0; i < buttonsLayer.buttonsLayerArray.length; i++) {
+            buttonsLayer.buttonsLayerArray[i] = new JButton(String.valueOf((i % 4) + 1));
+            buttonsLayer.buttonsLayerArray[i].addActionListener(this);
+            buttonsLayer.buttonsLayerArray[i].setPreferredSize(numberDimension);
+            buttonsLayer.buttonsLayerArray[i].setContentAreaFilled(false);
+            buttonsLayer.buttonsLayerArray[i].setBorderPainted(false);
+            buttonsLayer.buttonsLayerArray[i].setMargin(new Insets(0, 0, 0, 0));
+            buttonsLayer.buttonsLayerArray[i].setForeground(normalColor);
+            row.add(buttonsLayer.buttonsLayerArray[i]);
 
-            if ((i + 1) % 4 == 0 && i + 1 != numbersLayerButtons.length) {
+            if ((i + 1) % 4 == 0 && i + 1 != buttonsLayer.buttonsLayerArray.length) {
                 row.add(new JLabel("-"));
             }
         }
@@ -66,15 +71,15 @@ public class Numbers extends QuadTreeFormatPanel {
 
         for (int i = 0; i < 4; i++) {
             tmpDirection[0] = possibleDirections[i];
-            matchButtonStateAndQuadState(numbers1LayerButtons[i], Arrays.copyOfRange(tmpDirection, 0, 1));
+            matchButtonStateAndQuadState(BUTTONS_LAYER.LAYER_1.buttonsLayerArray[i], Arrays.copyOfRange(tmpDirection, 0, 1));
 
             for (int j = 0; j < 4; j++) {
                 tmpDirection[1] = possibleDirections[j];
-                matchButtonStateAndQuadState(numbers2LayerButtons[i * 4 + j], Arrays.copyOfRange(tmpDirection, 0, 2));
+                matchButtonStateAndQuadState(BUTTONS_LAYER.LAYER_2.buttonsLayerArray[i * 4 + j], Arrays.copyOfRange(tmpDirection, 0, 2));
 
                 for (int k = 0; k < 4; k++) {
                     tmpDirection[2] = possibleDirections[k];
-                    matchButtonStateAndQuadState(numbers3LayerButtons[i * 16 + j * 4 + k], tmpDirection);
+                    matchButtonStateAndQuadState(BUTTONS_LAYER.LAYER_3.buttonsLayerArray[i * 16 + j * 4 + k], tmpDirection);
                 }
             }
         }
@@ -101,7 +106,7 @@ public class Numbers extends QuadTreeFormatPanel {
                 tmpDirection[1] = possibleDirections[j];
                 for (int k = 0; k < 4; k++) {
                     tmpDirection[2] = possibleDirections[k];
-                    if (numbers3LayerButtons[i * 16 + j * 4 + k].getForeground() == highlightColor) {
+                    if (BUTTONS_LAYER.LAYER_3.buttonsLayerArray[i * 16 + j * 4 + k].getForeground() == highlightColor) {
                         quad.setActive(tmpDirection);
                     } else {
                         quad.setInactive(tmpDirection);
@@ -127,19 +132,19 @@ public class Numbers extends QuadTreeFormatPanel {
         }
 
         int i = 0;
-        for (JButton numbersButtonLayer1 : numbers1LayerButtons) {
+        for (JButton numbersButtonLayer1 : BUTTONS_LAYER.LAYER_1.buttonsLayerArray) {
             if (actionButton == numbersButtonLayer1) {
-                changeStateButtons(BUTTONS_LAYER.LAYER_2, i * 4, (i + 1) * 4 - 1, changeState);
-                changeStateButtons(BUTTONS_LAYER.LAYER_3, i * 16, (i + 1) * 16 - 1, changeState);
+                colorChangeForButtonsLayer(BUTTONS_LAYER.LAYER_2, changeState, i * 4, (i + 1) * 4 - 1);
+                colorChangeForButtonsLayer(BUTTONS_LAYER.LAYER_3, changeState, i * 16, (i + 1) * 16 - 1);
                 return;
             }
             i++;
         }
 
         int j = 0;
-        for (JButton numbersButtonLayer2 : numbers2LayerButtons) {
+        for (JButton numbersButtonLayer2 : BUTTONS_LAYER.LAYER_2.buttonsLayerArray) {
             if (actionButton == numbersButtonLayer2) {
-                changeStateButtons(BUTTONS_LAYER.LAYER_3, j * 4, (j + 1) * 4 - 1, changeState);
+                colorChangeForButtonsLayer(BUTTONS_LAYER.LAYER_3, changeState, j * 4, (j + 1) * 4 - 1);
                 return;
             }
             j++;
@@ -152,27 +157,6 @@ public class Numbers extends QuadTreeFormatPanel {
     @Override
     protected String nameTreeFormat() {
         return "Numbers";
-    }
-
-    private void changeStateButtons(BUTTONS_LAYER layer, int fromIdx, int toIdx, BUTTONS_STATE newState) {
-        Color tmpColor;
-        if (newState == BUTTONS_STATE.MARKED) {
-            tmpColor = highlightColor;
-        } else {
-            tmpColor = normalColor;
-        }
-
-        switch (layer) {
-            case LAYER_1:
-                colorChangeForButtons(numbers1LayerButtons, tmpColor, 3, fromIdx, toIdx);
-                break;
-            case LAYER_2:
-                colorChangeForButtons(numbers2LayerButtons, tmpColor, 15, fromIdx, toIdx);
-                break;
-            case LAYER_3:
-                colorChangeForButtons(numbers3LayerButtons, tmpColor, 63, fromIdx, toIdx);
-                break;
-        }
     }
 
     private void numbersButtonsToString() {
@@ -188,23 +172,8 @@ public class Numbers extends QuadTreeFormatPanel {
         int i = 0;
         int myMind = 0;
         String tmpNumbers = "";
-        JButton[] numbersButtons;
 
-        switch (layer) {
-            case LAYER_1:
-                numbersButtons = numbers1LayerButtons;
-                break;
-            case LAYER_2:
-                numbersButtons = numbers2LayerButtons;
-                break;
-            case LAYER_3:
-                numbersButtons = numbers3LayerButtons;
-                break;
-            default:
-                return;
-        }
-
-        for (JButton numberButton : numbersButtons) {
+        for (JButton numberButton : layer.buttonsLayerArray) {
             i++;
 
             if (numberButton.getForeground() == highlightColor) {
@@ -225,25 +194,25 @@ public class Numbers extends QuadTreeFormatPanel {
                 myMind = 0;
             }
         }
-
-
     }
 
-    private void colorChangeForButtons(JButton[] buttons, Color color, int maxIdx, int fromIdx, int toIdx) {
+    private void colorChangeForButtonsLayer(BUTTONS_LAYER buttonsLayer, BUTTONS_STATE newState, int fromIdx, int toIdx) {
+        int maxIdx = buttonsLayer.buttonsLayerArray.length - 1;
         if (fromIdx < 0 || fromIdx > maxIdx || toIdx < 0 || toIdx > maxIdx) {
             return;
         }
 
         for (int i = fromIdx; i <= toIdx; i++) {
-            buttons[i].setForeground(color);
+            if (newState == BUTTONS_STATE.MARKED) {
+                buttonsLayer.buttonsLayerArray[i].setForeground(highlightColor);
+            } else {
+                buttonsLayer.buttonsLayerArray[i].setForeground(normalColor);
+            }
+
         }
     }
 
     private enum BUTTONS_STATE {
         MARKED, UNMARKED
-    }
-
-    private enum BUTTONS_LAYER {
-        LAYER_1, LAYER_2, LAYER_3
     }
 }
