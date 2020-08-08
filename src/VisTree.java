@@ -13,7 +13,7 @@ public class VisTree extends QuadTreeFormatPanel {
 
     public VisTree(Dimension nodeDimension, int smallestGap, int verticalGap, Color normalColor, Color highlightColor, Color normalColorLine, Color highlightColorLine) {
         super(normalColor, highlightColor);
-        this.normalColor = normalColorLine;
+        this.normalColorLine = normalColorLine;
         this.highlightColorLine = highlightColorLine;
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -160,29 +160,21 @@ public class VisTree extends QuadTreeFormatPanel {
             tmpDirectionLayer1[0] = possibleDirections[i];
             tmpDirectionLayer2[0] = possibleDirections[i];
             tmpDirectionLayer3[0] = possibleDirections[i];
-            matchButtonStateAndQuadState(nodes1LayerButtons[i], tmpDirectionLayer1);
+            nodes1LayerButtons[i].setBackground(colorDependingOnQuadState(tmpDirectionLayer1));
 
             for (int j = 0; j < 4; j++) {
                 tmpDirectionLayer2[1] = possibleDirections[j];
                 tmpDirectionLayer3[1] = possibleDirections[j];
-                matchButtonStateAndQuadState(nodes2LayerButtons[i * 4 + j], tmpDirectionLayer2);
+                nodes2LayerButtons[i * 4 + j].setBackground(colorDependingOnQuadState(tmpDirectionLayer2));
 
                 for (int k = 0; k < 4; k++) {
                     tmpDirectionLayer3[2] = possibleDirections[k];
-                    matchButtonStateAndQuadState(nodes3LayerButtons[i * 16 + j * 4 + k], tmpDirectionLayer3);
+                    nodes3LayerButtons[i * 16 + j * 4 + k].setBackground(colorDependingOnQuadState(tmpDirectionLayer3));
                 }
             }
         }
 
         repaint();
-    }
-
-    private void matchButtonStateAndQuadState(JButton node, Direction[] quadPath) {
-        if (quad.isActive(quadPath)) {
-            node.setBackground(highlightColor);
-        } else {
-            node.setBackground(normalColor);
-        }
     }
 
     @Override

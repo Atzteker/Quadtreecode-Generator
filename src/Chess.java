@@ -77,11 +77,7 @@ public class Chess extends QuadTreeFormatPanel {
                             quad.setInactive(tmpDirection);
                         }
                     } else if (matching_type == MATCHING_TYPE.QUAD_IS_BASE) {
-                        if (quad.isActive(tmpDirection)) {
-                            chessButtons[tmpY][tmpX].setBackground(highlightColor);
-                        } else {
-                            chessButtons[tmpY][tmpX].setBackground(normalColor);
-                        }
+                        chessButtons[tmpY][tmpX].setBackground(colorDependingOnQuadState(tmpDirection));
                     }
                 }
             }

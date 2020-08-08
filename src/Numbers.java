@@ -1,8 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.beans.PropertyChangeListener;
 import java.util.Arrays;
 
 public class Numbers extends QuadTreeFormatPanel {
@@ -67,28 +65,20 @@ public class Numbers extends QuadTreeFormatPanel {
 
         for (int i = 0; i < 4; i++) {
             tmpDirection[0] = possibleDirections[i];
-            matchButtonStateAndQuadState(BUTTONS_LAYER.LAYER_1.buttonsLayerArray[i], Arrays.copyOfRange(tmpDirection, 0, 1));
+            BUTTONS_LAYER.LAYER_1.buttonsLayerArray[i].setForeground(colorDependingOnQuadState(Arrays.copyOfRange(tmpDirection, 0, 1)));
 
             for (int j = 0; j < 4; j++) {
                 tmpDirection[1] = possibleDirections[j];
-                matchButtonStateAndQuadState(BUTTONS_LAYER.LAYER_2.buttonsLayerArray[i * 4 + j], Arrays.copyOfRange(tmpDirection, 0, 2));
+                BUTTONS_LAYER.LAYER_2.buttonsLayerArray[i * 4 + j].setForeground(colorDependingOnQuadState(Arrays.copyOfRange(tmpDirection, 0, 2)));
 
                 for (int k = 0; k < 4; k++) {
                     tmpDirection[2] = possibleDirections[k];
-                    matchButtonStateAndQuadState(BUTTONS_LAYER.LAYER_3.buttonsLayerArray[i * 16 + j * 4 + k], tmpDirection);
+                    BUTTONS_LAYER.LAYER_3.buttonsLayerArray[i * 16 + j * 4 + k].setForeground(colorDependingOnQuadState(tmpDirection));
                 }
             }
         }
 
         numbersButtonsToString();
-    }
-
-    private void matchButtonStateAndQuadState(JButton button, Direction[] quadPath) {
-        if (quad.isActive(quadPath)) {
-            button.setForeground(highlightColor);
-        } else {
-            button.setForeground(normalColor);
-        }
     }
 
     @Override
