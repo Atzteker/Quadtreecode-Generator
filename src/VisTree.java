@@ -62,8 +62,6 @@ public class VisTree extends QuadTreeFormatPanel {
         firstLayer.setMaximumSize(firstLayer.getPreferredSize());
         secondLayer.setMaximumSize(secondLayer.getPreferredSize());
         thirdLayer.setMaximumSize(thirdLayer.getPreferredSize());
-
-        System.out.println("");
     }
 
     private void initNodes(NODE_LAYER nodeLayer, JPanel nodePanel, Dimension nodeDimension) {
@@ -197,9 +195,9 @@ public class VisTree extends QuadTreeFormatPanel {
         }
 
         if (actionNode == NODE_LAYER.ROOT.singleNode) {
-            setNodesState(NODE_LAYER.LAYER_1.nodeLayerArray, 0, 3, newNodeState);
-            setNodesState(NODE_LAYER.LAYER_2.nodeLayerArray, 0, 15, newNodeState);
-            setNodesState(NODE_LAYER.LAYER_3.nodeLayerArray, 0, 63, newNodeState);
+            setNodesState(NODE_LAYER.LAYER_1, 0, 3, newNodeState);
+            setNodesState(NODE_LAYER.LAYER_2, 0, 15, newNodeState);
+            setNodesState(NODE_LAYER.LAYER_3, 0, 63, newNodeState);
             repaint();
             return;
         }
@@ -207,8 +205,8 @@ public class VisTree extends QuadTreeFormatPanel {
         int i = 0;
         for (JButton nodeLayer1 : NODE_LAYER.LAYER_1.nodeLayerArray) {
             if (nodeLayer1 == actionNode) {
-                setNodesState(NODE_LAYER.LAYER_2.nodeLayerArray, i * 4, (i + 1) * 4 - 1, newNodeState);
-                setNodesState(NODE_LAYER.LAYER_3.nodeLayerArray, i * 16, (i + 1) * 16 - 1, newNodeState);
+                setNodesState(NODE_LAYER.LAYER_2, i * 4, (i + 1) * 4 - 1, newNodeState);
+                setNodesState(NODE_LAYER.LAYER_3, i * 16, (i + 1) * 16 - 1, newNodeState);
                 repaint();
                 return;
             }
@@ -218,7 +216,7 @@ public class VisTree extends QuadTreeFormatPanel {
         int j = 0;
         for (JButton nodeLayer2 : NODE_LAYER.LAYER_2.nodeLayerArray) {
             if (nodeLayer2 == actionNode) {
-                setNodesState(NODE_LAYER.LAYER_3.nodeLayerArray, j * 4, (j + 1) * 4 - 1, newNodeState);
+                setNodesState(NODE_LAYER.LAYER_3, j * 4, (j + 1) * 4 - 1, newNodeState);
                 repaint();
                 return;
             }
@@ -229,14 +227,13 @@ public class VisTree extends QuadTreeFormatPanel {
         // It's easier to do this with the function 'updateAppearance', after the quad was updated depending on layer 3
     }
 
-    private void setNodesState(JButton[] nodeLayer, int fromIdx, int toIdx, NODE_STATE node_state) {
+    private void setNodesState(NODE_LAYER nodeLayer, int fromIdx, int toIdx, NODE_STATE nodeState) {
         for (int i = fromIdx; i <= toIdx; i++) {
-            if (node_state == NODE_STATE.ACTIVE) {
-                nodeLayer[i].setBackground(highlightColor);
+            if (nodeState == NODE_STATE.ACTIVE) {
+                nodeLayer.nodeLayerArray[i].setBackground(highlightColor);
             } else {
-                nodeLayer[i].setBackground(normalColor);
+                nodeLayer.nodeLayerArray[i].setBackground(normalColor);
             }
-
         }
     }
 
