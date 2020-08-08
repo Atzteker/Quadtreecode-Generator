@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeListener;
+import java.util.Arrays;
 
 public class Numbers extends QuadTreeFormatPanel {
     private JButton[] numbers1LayerButtons = new JButton[4];
@@ -61,24 +62,19 @@ public class Numbers extends QuadTreeFormatPanel {
     @Override
     protected void updateAppearance() {
         Direction[] possibleDirections = new Direction[]{Direction.NW, Direction.NE, Direction.SE, Direction.SW};
-        Direction[] tmpDirectionLayer1 = new Direction[1];
-        Direction[] tmpDirectionLayer2 = new Direction[2];
-        Direction[] tmpDirectionLayer3 = new Direction[3];
+        Direction[] tmpDirection = new Direction[3];
 
         for (int i = 0; i < 4; i++) {
-            tmpDirectionLayer1[0] = possibleDirections[i];
-            tmpDirectionLayer2[0] = possibleDirections[i];
-            tmpDirectionLayer3[0] = possibleDirections[i];
-            matchButtonStateAndQuadState(numbers1LayerButtons[i], tmpDirectionLayer1);
+            tmpDirection[0] = possibleDirections[i];
+            matchButtonStateAndQuadState(numbers1LayerButtons[i], Arrays.copyOfRange(tmpDirection, 0, 1));
 
             for (int j = 0; j < 4; j++) {
-                tmpDirectionLayer2[1] = possibleDirections[j];
-                tmpDirectionLayer3[1] = possibleDirections[j];
-                matchButtonStateAndQuadState(numbers2LayerButtons[i * 4 + j], tmpDirectionLayer2);
+                tmpDirection[1] = possibleDirections[j];
+                matchButtonStateAndQuadState(numbers2LayerButtons[i * 4 + j], Arrays.copyOfRange(tmpDirection, 0, 2));
 
                 for (int k = 0; k < 4; k++) {
-                    tmpDirectionLayer3[2] = possibleDirections[k];
-                    matchButtonStateAndQuadState(numbers3LayerButtons[i * 16 + j * 4 + k], tmpDirectionLayer3);
+                    tmpDirection[2] = possibleDirections[k];
+                    matchButtonStateAndQuadState(numbers3LayerButtons[i * 16 + j * 4 + k], tmpDirection);
                 }
             }
         }
