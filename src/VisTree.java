@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.Arrays;
 
 public class VisTree extends QuadTreeFormatPanel {
     private JButton root = new JButton();
@@ -146,9 +147,7 @@ public class VisTree extends QuadTreeFormatPanel {
     @Override
     protected void updateAppearance() {
         Direction[] possibleDirections = new Direction[]{Direction.NW, Direction.NE, Direction.SE, Direction.SW};
-        Direction[] tmpDirectionLayer1 = new Direction[1];
-        Direction[] tmpDirectionLayer2 = new Direction[2];
-        Direction[] tmpDirectionLayer3 = new Direction[3];
+        Direction[] tmpDirection = new Direction[3];
 
         if (quad.isActive()) {
             root.setBackground(highlightColor);
@@ -157,19 +156,16 @@ public class VisTree extends QuadTreeFormatPanel {
         }
 
         for (int i = 0; i < 4; i++) {
-            tmpDirectionLayer1[0] = possibleDirections[i];
-            tmpDirectionLayer2[0] = possibleDirections[i];
-            tmpDirectionLayer3[0] = possibleDirections[i];
-            nodes1LayerButtons[i].setBackground(colorDependingOnQuadState(tmpDirectionLayer1));
+            tmpDirection[0] = possibleDirections[i];
+            nodes1LayerButtons[i].setBackground(colorDependingOnQuadState(Arrays.copyOfRange(tmpDirection,0,1)));
 
             for (int j = 0; j < 4; j++) {
-                tmpDirectionLayer2[1] = possibleDirections[j];
-                tmpDirectionLayer3[1] = possibleDirections[j];
-                nodes2LayerButtons[i * 4 + j].setBackground(colorDependingOnQuadState(tmpDirectionLayer2));
+                tmpDirection[1] = possibleDirections[j];
+                nodes2LayerButtons[i * 4 + j].setBackground(colorDependingOnQuadState(Arrays.copyOfRange(tmpDirection,0,2)));
 
                 for (int k = 0; k < 4; k++) {
-                    tmpDirectionLayer3[2] = possibleDirections[k];
-                    nodes3LayerButtons[i * 16 + j * 4 + k].setBackground(colorDependingOnQuadState(tmpDirectionLayer3));
+                    tmpDirection[2] = possibleDirections[k];
+                    nodes3LayerButtons[i * 16 + j * 4 + k].setBackground(colorDependingOnQuadState(tmpDirection));
                 }
             }
         }
