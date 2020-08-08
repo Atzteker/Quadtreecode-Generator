@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -9,13 +10,13 @@ public abstract class QuadTreeFormatPanel extends JPanel implements ActionListen
     protected Quad quad;
     protected String treeFormat = nameTreeFormat();
     protected PropertyChangeListener quadListener = new QuadListener();
+    protected Color normalColor;
+    protected Color highlightColor;
 
-    public QuadTreeFormatPanel(Quad quad) {
-        this.quad = quad;
-    }
-
-    public QuadTreeFormatPanel() {
+    public QuadTreeFormatPanel(Color normalColor, Color highlightColor) {
         this.quad = initializeQuadTree();
+        this.normalColor = normalColor;
+        this.highlightColor = highlightColor;
     }
 
     private Quad initializeQuadTree() {

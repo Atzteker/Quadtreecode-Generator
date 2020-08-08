@@ -8,12 +8,14 @@ public class VisTree extends QuadTreeFormatPanel {
     private JButton[] nodes2LayerButtons = new JButton[16];
     private JButton[] nodes3LayerButtons = new JButton[64];
 
-    private static Color normalColor = new Color(100, 100, 100, 10);
-    private static Color highlightColor = Color.BLACK;
-    private static Color normalColorLine = new Color(0, 44, 138, 10);
-    private static Color highlightColorLine = new Color(0, 44, 138);
+    private Color normalColorLine;
+    private Color highlightColorLine;
 
-    public VisTree(Dimension nodeDimension, int smallestGap, int verticalGap) {
+    public VisTree(Dimension nodeDimension, int smallestGap, int verticalGap, Color normalColor, Color highlightColor, Color normalColorLine, Color highlightColorLine) {
+        super(normalColor, highlightColor);
+        this.normalColor = normalColorLine;
+        this.highlightColorLine = highlightColorLine;
+
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         int secondLayerGap = (smallestGap + nodeDimension.width) * 4 - nodeDimension.width;

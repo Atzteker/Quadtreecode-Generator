@@ -16,12 +16,8 @@ public class Numbers extends QuadTreeFormatPanel {
     }
     private JTextArea textArea = new JTextArea(1, 90);
 
-    private Color normalColor;
-    private Color highlightColor;
-
     public Numbers(Dimension numberDimension, Color normalColor, Color highlightColor) {
-        this.normalColor = normalColor;
-        this.highlightColor = highlightColor;
+        super(normalColor,highlightColor);
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 

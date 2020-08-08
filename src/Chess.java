@@ -4,12 +4,9 @@ import java.awt.event.ActionEvent;
 
 public class Chess extends QuadTreeFormatPanel {
     private JButton[][] chessButtons = new JButton[8][8];
-    private Color normalColor;
-    private Color highlightColor;
 
     public Chess(Dimension chessFieldDimension, Color normalColor, Color highlightColor) {
-        this.normalColor = normalColor;
-        this.highlightColor = highlightColor;
+        super(normalColor, highlightColor);
         this.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.weightx = 1;
@@ -96,7 +93,7 @@ public class Chess extends QuadTreeFormatPanel {
     }
 
     private enum MATCHING_TYPE {
-        QUAD_IS_BASE, CHESS_IS_BASE;
+        QUAD_IS_BASE, CHESS_IS_BASE
     }
 
     private static class BoundariesChessArea {
