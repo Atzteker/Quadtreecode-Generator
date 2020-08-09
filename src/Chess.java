@@ -54,23 +54,28 @@ public class Chess extends QuadTreeFormatPanel {
 
     private void matchQuadAndChess(MATCHING_TYPE matching_type) {
         Direction[] tmpDirection = new Direction[3];
-        BoundariesChessArea boundariesChessArea;
+        BoundariesChessArea root = new BoundariesChessArea();
+        BoundariesChessArea tmpFirstLayer;
+        BoundariesChessArea tmpSecondLayer;
+        BoundariesChessArea tmpThirdLayer;
         int tmpX, tmpY;
 
         for (int i = 0; i < NUMBER_OF_DIRECTIONS; i++) {
             tmpDirection[0] = POSSIBLE_DIRECTIONS[i];
+            tmpFirstLayer = updateBoundaries(POSSIBLE_DIRECTIONS[i], root);
+
             for (int j = 0; j < NUMBER_OF_DIRECTIONS; j++) {
                 tmpDirection[1] = POSSIBLE_DIRECTIONS[j];
+                tmpSecondLayer = updateBoundaries(POSSIBLE_DIRECTIONS[j], tmpFirstLayer);
+
                 for (int k = 0; k < NUMBER_OF_DIRECTIONS; k++) {
                     tmpDirection[2] = POSSIBLE_DIRECTIONS[k];
-
-                    boundariesChessArea = new BoundariesChessArea();
-                    boundariesChessArea.updateBoundaries(tmpDirection);
-                    tmpX = boundariesChessArea.upperX;
-                    tmpY = boundariesChessArea.upperY;
+                    tmpThirdLayer = updateBoundaries(POSSIBLE_DIRECTIONS[k], tmpSecondLayer);
+                    tmpX = tmpThirdLayer.upperX;
+                    tmpY = tmpThirdLayer.upperY;
 
                     if (matching_type == MATCHING_TYPE.CHESS_IS_BASE) {
-                        changeQuadStateDependingOnColor(chessButtons[tmpY][tmpX].getBackground(),tmpDirection);
+                        changeQuadStateDependingOnColor(chessButtons[tmpY][tmpX].getBackground(), tmpDirection);
                     } else if (matching_type == MATCHING_TYPE.QUAD_IS_BASE) {
                         chessButtons[tmpY][tmpX].setBackground(colorDependingOnQuadState(tmpDirection));
                     }
@@ -87,37 +92,46 @@ public class Chess extends QuadTreeFormatPanel {
         QUAD_IS_BASE, CHESS_IS_BASE
     }
 
-    private static class BoundariesChessArea {
-        int lowerX = 0, upperX = 7;
-        int lowerY = 0, upperY = 7;
+    private static BoundariesChessArea updateBoundaries(Direction direction, BoundariesChessArea currentBoundaries) {
+        int containment = (currentBoundaries.upperX - currentBoundaries.lowerX + 1) / 2;
 
-        public void updateBoundaries(Direction direction) {
-            int containment = (upperX - lowerX + 1) / 2;
-
-            switch (direction) {
-                case NW:
-                    this.upperX -= containment;
-                    this.upperY -= containment;
-                    break;
-                case NE:
-                    this.lowerX += containment;
-                    this.upperY -= containment;
-                    break;
-                case SE:
-                    this.lowerX += containment;
-                    this.lowerY += containment;
-                    break;
-                case SW:
-                    this.upperX -= containment;
-                    this.lowerY += containment;
-                    break;
-            }
+        switch (direction) {
+            case NW:
+                return new BoundariesChessArea(currentBoundaries.lowerX, currentBoundaries.lowerY, currentBoundaries.upperX - containment, currentBoundaries.upperY - containment);
+            case NE:
+                return new BoundariesChessArea(currentBoundaries.lowerX + containment, currentBoundaries.lowerY, currentBoundaries.upperX, currentBoundaries.upperY - containment);
+            case SE:
+                return new BoundariesChessArea(currentBoundaries.lowerX + containment, currentBoundaries.lowerY + containment, currentBoundaries.upperX, currentBoundaries.upperY);
+            case SW:
+                return new BoundariesChessArea(currentBoundaries.lowerX, currentBoundaries.lowerY + containment, currentBoundaries.upperX - containment, currentBoundaries.upperY);
         }
 
-        public void updateBoundaries(Direction[] directions) {
-            for (Direction direction : directions) {
-                updateBoundaries(direction);
-            }
+        return new BoundariesChessArea(currentBoundaries);
+    }
+
+    private static class BoundariesChessArea {
+        int lowerX, upperX;
+        int lowerY, upperY;
+
+        BoundariesChessArea() {
+            this.upperX = 7;
+            this.upperY = 7;
+            this.lowerX = 0;
+            this.lowerY = 0;
+        }
+
+        BoundariesChessArea(BoundariesChessArea that) {
+            this.upperX = that.upperX;
+            this.upperY = that.upperY;
+            this.lowerX = that.lowerX;
+            this.lowerY = that.lowerY;
+        }
+
+        BoundariesChessArea(int lowerX, int lowerY, int upperX, int upperY) {
+            this.upperX = upperX;
+            this.upperY = upperY;
+            this.lowerX = lowerX;
+            this.lowerY = lowerY;
         }
     }
 }
