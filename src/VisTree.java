@@ -136,19 +136,19 @@ public class VisTree extends QuadTreeFormatPanel {
     protected void updateAppearance() {
         Direction[] tmpDirection = new Direction[3];
 
-        NODE_LAYER.ROOT.singleNode.setBackground(colorDependingOnQuadState(null));
+        NODE_LAYER.ROOT.singleNode.setBackground(getColorDependingOnQuadState(null));
 
         for (int i = 0; i < NUMBER_OF_DIRECTIONS; i++) {
             tmpDirection[0] = POSSIBLE_DIRECTIONS[i];
-            NODE_LAYER.LAYER_1.nodeLayerArray[i].setBackground(colorDependingOnQuadState(Arrays.copyOfRange(tmpDirection, 0, 1)));
+            NODE_LAYER.LAYER_1.nodeLayerArray[i].setBackground(getColorDependingOnQuadState(Arrays.copyOfRange(tmpDirection, 0, 1)));
 
             for (int j = 0; j < NUMBER_OF_DIRECTIONS; j++) {
                 tmpDirection[1] = POSSIBLE_DIRECTIONS[j];
-                NODE_LAYER.LAYER_2.nodeLayerArray[i * 4 + j].setBackground(colorDependingOnQuadState(Arrays.copyOfRange(tmpDirection, 0, 2)));
+                NODE_LAYER.LAYER_2.nodeLayerArray[i * 4 + j].setBackground(getColorDependingOnQuadState(Arrays.copyOfRange(tmpDirection, 0, 2)));
 
                 for (int k = 0; k < NUMBER_OF_DIRECTIONS; k++) {
                     tmpDirection[2] = POSSIBLE_DIRECTIONS[k];
-                    NODE_LAYER.LAYER_3.nodeLayerArray[i * 16 + j * 4 + k].setBackground(colorDependingOnQuadState(tmpDirection));
+                    NODE_LAYER.LAYER_3.nodeLayerArray[i * 16 + j * 4 + k].setBackground(getColorDependingOnQuadState(tmpDirection));
                 }
             }
         }

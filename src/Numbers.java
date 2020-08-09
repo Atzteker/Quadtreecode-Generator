@@ -65,15 +65,15 @@ public class Numbers extends QuadTreeFormatPanel {
 
         for (int i = 0; i < NUMBER_OF_DIRECTIONS; i++) {
             tmpDirection[0] = possibleDirections[i];
-            BUTTONS_LAYER.LAYER_1.buttonsLayerArray[i].setForeground(colorDependingOnQuadState(Arrays.copyOfRange(tmpDirection, 0, 1)));
+            BUTTONS_LAYER.LAYER_1.buttonsLayerArray[i].setForeground(getColorDependingOnQuadState(Arrays.copyOfRange(tmpDirection, 0, 1)));
 
             for (int j = 0; j < NUMBER_OF_DIRECTIONS; j++) {
                 tmpDirection[1] = possibleDirections[j];
-                BUTTONS_LAYER.LAYER_2.buttonsLayerArray[i * 4 + j].setForeground(colorDependingOnQuadState(Arrays.copyOfRange(tmpDirection, 0, 2)));
+                BUTTONS_LAYER.LAYER_2.buttonsLayerArray[i * 4 + j].setForeground(getColorDependingOnQuadState(Arrays.copyOfRange(tmpDirection, 0, 2)));
 
                 for (int k = 0; k < NUMBER_OF_DIRECTIONS; k++) {
                     tmpDirection[2] = possibleDirections[k];
-                    BUTTONS_LAYER.LAYER_3.buttonsLayerArray[i * 16 + j * 4 + k].setForeground(colorDependingOnQuadState(tmpDirection));
+                    BUTTONS_LAYER.LAYER_3.buttonsLayerArray[i * 16 + j * 4 + k].setForeground(getColorDependingOnQuadState(tmpDirection));
                 }
             }
         }
