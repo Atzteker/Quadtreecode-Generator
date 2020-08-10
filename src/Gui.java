@@ -54,7 +54,7 @@ public class Gui {
     }
 
     public static void main(String[] args) {
-        JFrame mainFrame = new JFrame("Quadtreecode-Generator");
+        JFrame mainFrame = new JFrame("Quadtree-Konverter");
         mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         initializeListener();
         initializeComponents(mainFrame);

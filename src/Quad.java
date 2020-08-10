@@ -173,6 +173,7 @@ public class Quad {
     /**
      * Starting from this element this function following a given path through the quad tree layers.
      * It chooses one of the four children corresponding to the first given direction and does the same for this child with the next direction ond so on.
+     *
      * @param directions The path trough the Quad-Tree.
      * @return The element at the end of the given path.
      */

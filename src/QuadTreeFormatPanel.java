@@ -4,8 +4,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.prefs.PreferenceChangeListener;
 
+/**
+ * This class is the template for a Quad-Tree format you want to integrate in the 'Quad-Tree Converter'.
+ * The logic for a Quad-Tree format and there visual components belong to a JPanel.
+ */
 public abstract class QuadTreeFormatPanel extends JPanel implements ActionListener {
     protected final Direction[] POSSIBLE_DIRECTIONS = new Direction[]{Direction.NW, Direction.NE, Direction.SE, Direction.SW};
     protected final int NUMBER_OF_DIRECTIONS = 4;
