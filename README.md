@@ -1,1 +1,0 @@
-# Quadtreecode-Generator
