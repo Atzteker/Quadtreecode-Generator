@@ -10,15 +10,23 @@ import java.beans.PropertyChangeListener;
  * The logic for a Quad-Tree format and there visual components belong to a JPanel.
  */
 public abstract class QuadTreeFormatPanel extends JPanel implements ActionListener {
-    // Array with all possible directions of enum Direction.
-    // You can use this array to easily iterate over all possible Directions.
+    /**
+     * Array with all possible directions of enum Direction.
+     * You can use this array to easily iterate over all possible Directions.
+     */
     protected final Direction[] POSSIBLE_DIRECTIONS = new Direction[]{Direction.NW, Direction.NE, Direction.SE, Direction.SW};
-    // The number of all possible directions for a Quad-Tree children
+    /**
+     * The number of all possible directions for a Quad-Tree children
+     */
     protected final int NUMBER_OF_DIRECTIONS = 4;
-    // The current Quad Tree
+    /**
+     * The current Quad Tree
+     */
     protected Quad quad;
-    // The name of the Quad-Tree format.
-    // Is needed to distinguish between the different quadListeners.
+    /**
+     * The name of the Quad-Tree format.
+     * Is needed to distinguish between the different quadListeners.
+     */
     protected String treeFormat = nameTreeFormat();
     protected PropertyChangeListener quadListener = new QuadListener();
     protected Color normalColor;

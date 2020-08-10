@@ -1,5 +1,3 @@
-import java.awt.*;
-
 /**
  * This class represents one element of a Quad-tree. It can be a child of other Quad-tree elements and can also contain other Quad-tree elements.
  * The children of this Quad-Tree element are elements in a lower layer and the parent is a element in a higher layer of the Quad-Tree.
@@ -7,14 +5,15 @@ import java.awt.*;
  * respectively elements in the lowest layer of the quad tree.
  */
 public class Quad {
-    // The active state is true if the element contains data, respectively is used. Otherwise its false.
-    // The active state depends on the children. If the quad element haven't children the state can set as required.
+    /**
+     * The active state is true if the element contains data, respectively is used, otherwise it's false.
+     * The active state depends on the children. If the quad element haven't children the state can set as required.
+     */
     private boolean active;
-    // This are the children of the Quad element
-    private Quad upLeft;
-    private Quad upRight;
-    private Quad boRight;
-    private Quad boLeft;
+    /**
+     * This are the children of the Quad element
+     */
+    private Quad upLeft, upRight, boRight, boLeft;
 
     /**
      * Creates a new Quad-Tree element which have the given children. This element will be initialized as active, if one of the given children is active.
