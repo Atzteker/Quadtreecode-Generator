@@ -13,12 +13,12 @@ public class Gui {
      * Connects the main components of the Gui with listeners.
      */
     private static void initializeListener() {
-        numbers.addQuadListener(chess.getQuadListener(), numbers.getTreeFormat());
-        numbers.addQuadListener(visTree.getQuadListener(), numbers.getTreeFormat());
-        chess.addQuadListener(numbers.getQuadListener(), chess.getTreeFormat());
-        chess.addQuadListener(visTree.getQuadListener(), chess.getTreeFormat());
-        visTree.addQuadListener(numbers.getQuadListener(), visTree.getTreeFormat());
-        visTree.addQuadListener(chess.getQuadListener(), visTree.getTreeFormat());
+        numbers.addQuadListener(chess.getQuadListener());
+        numbers.addQuadListener(visTree.getQuadListener());
+        chess.addQuadListener(numbers.getQuadListener());
+        chess.addQuadListener(visTree.getQuadListener());
+        visTree.addQuadListener(numbers.getQuadListener());
+        visTree.addQuadListener(chess.getQuadListener());
     }
 
     /**
