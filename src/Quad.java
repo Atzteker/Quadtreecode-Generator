@@ -80,6 +80,7 @@ public class Quad {
      * Does the same like {@link #isActive()} but for a child element in a given direction.
      *
      * @param directions This are the directions to step trough the Quad-Tree to find the specific child element.
+     * @return true if active, false if inactive
      */
     public boolean isActive(Direction[] directions) {
         return this.moveTroughQuadTree(directions).isActive();
@@ -132,6 +133,7 @@ public class Quad {
     /**
      * Does the same like {@link #setActiveState(boolean)} but for a child element in a given direction.
      *
+     * @param newSate    true if the Quad element should be active, false if the Quad element should be inactive
      * @param directions This are the directions to step trough the Quad-Tree to find the specific child element.
      */
     private void setActiveState(boolean newSate, Direction[] directions) {

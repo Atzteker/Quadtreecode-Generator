@@ -59,6 +59,7 @@ public class Chess extends QuadTreeFormatPanel {
 
     /**
      * {@inheritDoc}
+     * <p>
      * It simply switches the color/state of the clicked chess field.
      * So if the chess field was marked as used now mark it as unused and vice versa.
      */

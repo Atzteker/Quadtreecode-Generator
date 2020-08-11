@@ -9,7 +9,7 @@ import java.util.Arrays;
  * So for a Quad-Tree element, where the NW child and the SW child are filled with something, the numbers would be 14.
  * To distinguish between the different Quad-Tree elements and there children, there is a minus(-) between them in the sequence
  * and the layers in the Quad-Tree are separated with '|'.
- * For example: 12|13-14|1-23-134-2 --> 13 after the first '|' means that for the NW child of the root element,
+ * For example: 12|13-14|1-23-134-2. 13 after the first '|' means that for the NW child of the root element,
  * there children NW and SE are filled/used and so on.
  */
 public class Numbers extends QuadTreeFormatPanel {
@@ -30,7 +30,7 @@ public class Numbers extends QuadTreeFormatPanel {
     /**
      * Cause of the user always can modify the whole possible sequence,
      * it's required that in this text area only the pure sequence is printed
-     * --> Quad-Tree elements/numbers which are used/filled.
+     * which are the used/filled Quad-Tree elements/numbers.
      */
     private JTextArea textArea = new JTextArea(1, 90);
 
@@ -96,6 +96,7 @@ public class Numbers extends QuadTreeFormatPanel {
 
     /**
      * {@inheritDoc}
+     * <p>
      * For every layer in the Quad-Tree it transmits the active state of the elements to the equivalent numbers.
      */
     @Override
@@ -123,6 +124,7 @@ public class Numbers extends QuadTreeFormatPanel {
 
     /**
      * {@inheritDoc}
+     * <p>
      * The quad will be updated based on the third layer of the visual components, which is the lowest layer in the Quad-Tree.
      * At the end the whole Quad-Tree can be updated depending on the lowest layer.
      * Also the appearance of this Quad-Tree format will be updated based on the updated Quad-Tree,
@@ -150,6 +152,7 @@ public class Numbers extends QuadTreeFormatPanel {
 
     /**
      * {@inheritDoc}
+     * <p>
      * If the user clicked one Number their state switches from active to inactive or vice versa.
      * Later the Quad-Tree will be updated based on the third numbers layer.
      * So if there are changes in the upper layer it's required to adjust the third layer and transmit the changes downwards.
