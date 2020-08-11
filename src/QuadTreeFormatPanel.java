@@ -29,15 +29,21 @@ public abstract class QuadTreeFormatPanel extends JPanel implements ActionListen
      */
     protected String treeFormat = nameTreeFormat();
     protected PropertyChangeListener quadListener = new QuadListener();
+    /**
+     * The color of a Quad-Tree component/element if they aren't used/active
+     */
     protected Color normalColor;
+    /**
+     * The color of a Quad-Tree component/element if they are used/active
+     */
     protected Color highlightColor;
 
     /**
      * The basic constructor which should be used from the different Quad-Tree formats.
      * It initializes an empty Quad-Tree and defines the to possible colors for the visual Quad-Tree components
      *
-     * @param normalColor    The color of a Quad-Tree component/element if they aren't used/active
-     * @param highlightColor The color of a Quad-Tree component/element if they are used/active
+     * @param normalColor {@link #normalColor}
+     * @param highlightColor {@link #highlightColor}
      */
     public QuadTreeFormatPanel(Color normalColor, Color highlightColor) {
         this.quad = initializeQuadTree();
