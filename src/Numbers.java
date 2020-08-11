@@ -3,19 +3,46 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.Arrays;
 
+/**
+ * Represents the Quad-Tree as a Sequence of Numbers. The numbers 1,2,3 and 4 corresponds to the compass directions NW,NE,SE and SW.
+ * If one of the numbers are part of the sequence it means that this Quad-Tree element is represented in the Quad-Tree, respectively used/filled.
+ * So for a Quad-Tree element, where the NW child and the SW child are filled with something, the numbers would be 14.
+ * To distinguish between the different Quad-Tree elements and there children, there is a minus(-) between them in the sequence
+ * and the layers in the Quad-Tree are separated with '|'.
+ * For example: 12|13-14|1-23-134-2 --> 13 after the first '|' means that for the NW child of the root element,
+ * there children NW and SE are filled/used and so on.
+ */
 public class Numbers extends QuadTreeFormatPanel {
-    private enum BUTTONS_LAYER {
+    /**
+     * Organizes the visual components.
+     * It divided the visual components into three layer (Sequences between '|').
+     * In this case the visual components are numbers from 1 to 4 which the user can activate or deactivate.
+     */
+    private enum NUMBERS_LAYER {
         LAYER_1(4), LAYER_2(16), LAYER_3(64);
-        public JButton[] buttonsLayerArray;
+        public JButton[] numbersLayerArray;
 
-        BUTTONS_LAYER(int amount) {
-            this.buttonsLayerArray = new JButton[amount];
+        NUMBERS_LAYER(int amount) {
+            this.numbersLayerArray = new JButton[amount];
         }
     }
+
+    /**
+     * Cause of the user always can modify the whole possible sequence,
+     * it's required that in this text area only the pure sequence is printed
+     * --> Quad-Tree elements/numbers which are used/filled.
+     */
     private JTextArea textArea = new JTextArea(1, 90);
 
+    /**
+     * Creates a new JPanel with a Quad-Tree represented as a sequence of numbers and a text area to copy the sequence
+     *
+     * @param numberDimension dimension/size of one number/visual component
+     * @param normalColor     {@link #normalColor}
+     * @param highlightColor  {@link #highlightColor}
+     */
     public Numbers(Dimension numberDimension, Color normalColor, Color highlightColor) {
-        super(normalColor,highlightColor);
+        super(normalColor, highlightColor);
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -26,11 +53,11 @@ public class Numbers extends QuadTreeFormatPanel {
         secondRow.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         secondRow.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        initNumbersLayer(numberDimension, firstRow, BUTTONS_LAYER.LAYER_1);
+        initNumbersLayer(numberDimension, firstRow, NUMBERS_LAYER.LAYER_1);
         firstRow.add(new JLabel("|"));
-        initNumbersLayer(numberDimension, firstRow, BUTTONS_LAYER.LAYER_2);
+        initNumbersLayer(numberDimension, firstRow, NUMBERS_LAYER.LAYER_2);
         firstRow.add(new JLabel("|"));
-        initNumbersLayer(numberDimension, firstRow, BUTTONS_LAYER.LAYER_3);
+        initNumbersLayer(numberDimension, firstRow, NUMBERS_LAYER.LAYER_3);
 
         textArea.setEditable(false);
         secondRow.add(textArea);
@@ -41,23 +68,36 @@ public class Numbers extends QuadTreeFormatPanel {
         secondRow.setMaximumSize(secondRow.getPreferredSize());
     }
 
-    private void initNumbersLayer(Dimension numberDimension, JPanel row, BUTTONS_LAYER buttonsLayer) {
-        for (int i = 0; i < buttonsLayer.buttonsLayerArray.length; i++) {
-            buttonsLayer.buttonsLayerArray[i] = new JButton(String.valueOf((i % NUMBER_OF_DIRECTIONS) + 1));
-            buttonsLayer.buttonsLayerArray[i].addActionListener(this);
-            buttonsLayer.buttonsLayerArray[i].setPreferredSize(numberDimension);
-            buttonsLayer.buttonsLayerArray[i].setContentAreaFilled(false);
-            buttonsLayer.buttonsLayerArray[i].setBorderPainted(false);
-            buttonsLayer.buttonsLayerArray[i].setMargin(new Insets(0, 0, 0, 0));
-            buttonsLayer.buttonsLayerArray[i].setForeground(normalColor);
-            row.add(buttonsLayer.buttonsLayerArray[i]);
+    /**
+     * For a given Quad-Tree layer the corresponding visual components(numbers) will be added to the Numbers panel on the given row.
+     * The Numbers will be initialised as inactive/unused.
+     *
+     * @param numberDimension dimension/size of one number/visual component
+     * @param row             The row in which the given visual components will be added.
+     *                        Normally there are the first row and the second row and all numbers should be on the first row.
+     * @param numbersLayer    The Quad-Tree layer with the corresponding visual components(numbers)
+     */
+    private void initNumbersLayer(Dimension numberDimension, JPanel row, NUMBERS_LAYER numbersLayer) {
+        for (int i = 0; i < numbersLayer.numbersLayerArray.length; i++) {
+            numbersLayer.numbersLayerArray[i] = new JButton(String.valueOf((i % NUMBER_OF_DIRECTIONS) + 1));
+            numbersLayer.numbersLayerArray[i].addActionListener(this);
+            numbersLayer.numbersLayerArray[i].setPreferredSize(numberDimension);
+            numbersLayer.numbersLayerArray[i].setContentAreaFilled(false);
+            numbersLayer.numbersLayerArray[i].setBorderPainted(false);
+            numbersLayer.numbersLayerArray[i].setMargin(new Insets(0, 0, 0, 0));
+            numbersLayer.numbersLayerArray[i].setForeground(normalColor);
+            row.add(numbersLayer.numbersLayerArray[i]);
 
-            if ((i + 1) % NUMBER_OF_DIRECTIONS == 0 && i + 1 != buttonsLayer.buttonsLayerArray.length) {
+            if ((i + 1) % NUMBER_OF_DIRECTIONS == 0 && i + 1 != numbersLayer.numbersLayerArray.length) {
                 row.add(new JLabel("-"));
             }
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * For every layer in the Quad-Tree it transmits the active state of the elements to the equivalent numbers.
+     */
     @Override
     protected void updateAppearance() {
         Direction[] possibleDirections = new Direction[]{Direction.NW, Direction.NE, Direction.SE, Direction.SW};
@@ -65,15 +105,15 @@ public class Numbers extends QuadTreeFormatPanel {
 
         for (int i = 0; i < NUMBER_OF_DIRECTIONS; i++) {
             tmpDirection[0] = possibleDirections[i];
-            BUTTONS_LAYER.LAYER_1.buttonsLayerArray[i].setForeground(getColorDependingOnQuadState(Arrays.copyOfRange(tmpDirection, 0, 1)));
+            NUMBERS_LAYER.LAYER_1.numbersLayerArray[i].setForeground(getColorDependingOnQuadState(Arrays.copyOfRange(tmpDirection, 0, 1)));
 
             for (int j = 0; j < NUMBER_OF_DIRECTIONS; j++) {
                 tmpDirection[1] = possibleDirections[j];
-                BUTTONS_LAYER.LAYER_2.buttonsLayerArray[i * 4 + j].setForeground(getColorDependingOnQuadState(Arrays.copyOfRange(tmpDirection, 0, 2)));
+                NUMBERS_LAYER.LAYER_2.numbersLayerArray[i * 4 + j].setForeground(getColorDependingOnQuadState(Arrays.copyOfRange(tmpDirection, 0, 2)));
 
                 for (int k = 0; k < NUMBER_OF_DIRECTIONS; k++) {
                     tmpDirection[2] = possibleDirections[k];
-                    BUTTONS_LAYER.LAYER_3.buttonsLayerArray[i * 16 + j * 4 + k].setForeground(getColorDependingOnQuadState(tmpDirection));
+                    NUMBERS_LAYER.LAYER_3.numbersLayerArray[i * 16 + j * 4 + k].setForeground(getColorDependingOnQuadState(tmpDirection));
                 }
             }
         }
@@ -81,6 +121,14 @@ public class Numbers extends QuadTreeFormatPanel {
         numbersButtonsToString();
     }
 
+    /**
+     * {@inheritDoc}
+     * The quad will be updated based on the third layer of the visual components, which is the lowest layer in the Quad-Tree.
+     * At the end the whole Quad-Tree can be updated depending on the lowest layer.
+     * Also the appearance of this Quad-Tree format will be updated based on the updated Quad-Tree,
+     * because it's easier to change the whole appearance based on the new quad tree,
+     * instead of do this hardcoded in {@link #processAppearanceChange(ActionEvent)},
+     */
     @Override
     protected void updateQuad() {
         Direction[] tmpDirection = new Direction[3];
@@ -91,7 +139,7 @@ public class Numbers extends QuadTreeFormatPanel {
                 tmpDirection[1] = POSSIBLE_DIRECTIONS[j];
                 for (int k = 0; k < NUMBER_OF_DIRECTIONS; k++) {
                     tmpDirection[2] = POSSIBLE_DIRECTIONS[k];
-                    changeQuadStateDependingOnColor(BUTTONS_LAYER.LAYER_3.buttonsLayerArray[i * 16 + j * 4 + k].getForeground(), tmpDirection);
+                    changeQuadStateDependingOnColor(NUMBERS_LAYER.LAYER_3.numbersLayerArray[i * 16 + j * 4 + k].getForeground(), tmpDirection);
                 }
             }
         }
@@ -100,32 +148,42 @@ public class Numbers extends QuadTreeFormatPanel {
         updateAppearance(); // in addition to processAppearanceChange
     }
 
+    /**
+     * {@inheritDoc}
+     * If the user clicked one Number their state switches from active to inactive or vice versa.
+     * Later the Quad-Tree will be updated based on the third numbers layer.
+     * So if there are changes in the upper layer it's required to adjust the third layer and transmit the changes downwards.
+     * Changes in the third layer must not be transmit upwards, because the upper layer aren't needed to update the Quad-Tree
+     * and their appearance can be easily changed with the updated Quad-Tree.
+     * To guarantee that, after the user had activated or deactivated a number in the upper layers, the number sequence remains correct
+     * also the 'child numbers' of these activated or deactivated number needs to be set accordingly.
+     */
     @Override
     protected void processAppearanceChange(ActionEvent e) {
         JButton actionButton = (JButton) e.getSource();
-        BUTTONS_STATE changeState;
+        NUMBER_STATE changeState;
         if (actionButton.getForeground() == normalColor) {
             actionButton.setForeground(highlightColor);
-            changeState = BUTTONS_STATE.MARKED;
+            changeState = NUMBER_STATE.MARKED;
         } else {
             actionButton.setForeground(normalColor);
-            changeState = BUTTONS_STATE.UNMARKED;
+            changeState = NUMBER_STATE.UNMARKED;
         }
 
         int i = 0;
-        for (JButton numbersButtonLayer1 : BUTTONS_LAYER.LAYER_1.buttonsLayerArray) {
+        for (JButton numbersButtonLayer1 : NUMBERS_LAYER.LAYER_1.numbersLayerArray) {
             if (actionButton == numbersButtonLayer1) {
-                colorChangeForButtonsLayer(BUTTONS_LAYER.LAYER_2, changeState, i * 4, (i + 1) * 4 - 1);
-                colorChangeForButtonsLayer(BUTTONS_LAYER.LAYER_3, changeState, i * 16, (i + 1) * 16 - 1);
+                colorChangeForButtonsLayer(NUMBERS_LAYER.LAYER_2, changeState, i * 4, (i + 1) * 4 - 1);
+                colorChangeForButtonsLayer(NUMBERS_LAYER.LAYER_3, changeState, i * 16, (i + 1) * 16 - 1);
                 return;
             }
             i++;
         }
 
         int j = 0;
-        for (JButton numbersButtonLayer2 : BUTTONS_LAYER.LAYER_2.buttonsLayerArray) {
+        for (JButton numbersButtonLayer2 : NUMBERS_LAYER.LAYER_2.numbersLayerArray) {
             if (actionButton == numbersButtonLayer2) {
-                colorChangeForButtonsLayer(BUTTONS_LAYER.LAYER_3, changeState, j * 4, (j + 1) * 4 - 1);
+                colorChangeForButtonsLayer(NUMBERS_LAYER.LAYER_3, changeState, j * 4, (j + 1) * 4 - 1);
                 return;
             }
             j++;
@@ -135,26 +193,37 @@ public class Numbers extends QuadTreeFormatPanel {
         // It's easier to do this with the function 'updateAppearance', after the quad was updated depending on layer 3
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String nameTreeFormat() {
         return "Numbers";
     }
 
+    /**
+     * Converts the visual components/numbers in a string and write the string in the textArea.
+     */
     private void numbersButtonsToString() {
         textArea.setText(" ");
-        appendNumbersToTextArea(BUTTONS_LAYER.LAYER_1);
+        appendNumbersToTextArea(NUMBERS_LAYER.LAYER_1);
         textArea.append(" | ");
-        appendNumbersToTextArea(BUTTONS_LAYER.LAYER_2);
+        appendNumbersToTextArea(NUMBERS_LAYER.LAYER_2);
         textArea.append(" | ");
-        appendNumbersToTextArea(BUTTONS_LAYER.LAYER_3);
+        appendNumbersToTextArea(NUMBERS_LAYER.LAYER_3);
     }
 
-    private void appendNumbersToTextArea(BUTTONS_LAYER layer) {
+    /**
+     * The activated numbers from the given layer are converted to a string and appended at the textArea.
+     *
+     * @param layer One of the three layers with visual components/numbers.
+     */
+    private void appendNumbersToTextArea(NUMBERS_LAYER layer) {
         int i = 0;
         int myMind = 0;
         String tmpNumbers = "";
 
-        for (JButton numberButton : layer.buttonsLayerArray) {
+        for (JButton numberButton : layer.numbersLayerArray) {
             i++;
 
             if (numberButton.getForeground() == highlightColor) {
@@ -177,23 +246,42 @@ public class Numbers extends QuadTreeFormatPanel {
         }
     }
 
-    private void colorChangeForButtonsLayer(BUTTONS_LAYER buttonsLayer, BUTTONS_STATE newState, int fromIdx, int toIdx) {
-        int maxIdx = buttonsLayer.buttonsLayerArray.length - 1;
+    /**
+     * The function changes the color of the visual components/numbers corresponding to the given state.
+     * Only the numbers in the given Index range will be changed.
+     *
+     * @param numbersLayer One of the three layers with visual components/numbers. The color of this numbers will be changed.
+     * @param newState     The state on which the numbers should set
+     * @param fromIdx      The first number which should set to the given state
+     * @param toIdx        The last number which should set to the given state
+     */
+    private void colorChangeForButtonsLayer(NUMBERS_LAYER numbersLayer, NUMBER_STATE newState, int fromIdx, int toIdx) {
+        int maxIdx = numbersLayer.numbersLayerArray.length - 1;
         if (fromIdx < 0 || fromIdx > maxIdx || toIdx < 0 || toIdx > maxIdx) {
             return;
         }
 
         for (int i = fromIdx; i <= toIdx; i++) {
-            if (newState == BUTTONS_STATE.MARKED) {
-                buttonsLayer.buttonsLayerArray[i].setForeground(highlightColor);
+            if (newState == NUMBER_STATE.MARKED) {
+                numbersLayer.numbersLayerArray[i].setForeground(highlightColor);
             } else {
-                buttonsLayer.buttonsLayerArray[i].setForeground(normalColor);
+                numbersLayer.numbersLayerArray[i].setForeground(normalColor);
             }
 
         }
     }
 
-    private enum BUTTONS_STATE {
-        MARKED, UNMARKED
+    /**
+     * Can be used to describe if a number is active or inactive
+     */
+    private enum NUMBER_STATE {
+        /**
+         * The number is active/used
+         */
+        MARKED,
+        /**
+         * The number is inactive/unused
+         */
+        UNMARKED
     }
 }
