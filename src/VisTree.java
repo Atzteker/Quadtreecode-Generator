@@ -3,7 +3,15 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.Arrays;
 
+/**
+ * Represents the Quad-Tree as a tree with nodes and connections
+ */
 public class VisTree extends QuadTreeFormatPanel {
+    /**
+     * Organizes the visual components.
+     * It divided the visual components into three layer and the root.
+     * In this case the visual components are nodes which are connected with lines.
+     */
     private enum NODE_LAYER {
         ROOT(1), LAYER_1(4), LAYER_2(16), LAYER_3(64);
         public JButton[] nodeLayerArray;
@@ -20,9 +28,26 @@ public class VisTree extends QuadTreeFormatPanel {
         }
     }
 
+    /**
+     * The ambivalent color for the line between the node if the higher node are inactive/unused
+     */
     private Color normalColorLine;
+    /**
+     * The ambivalent color for the line between the node if the higher node are active/used
+     */
     private Color highlightColorLine;
 
+    /**
+     * Creates a new JPanel were the 'root + 3 layer Quad-Tree' is represented as a visual tree structure with nodes and connections.
+     *
+     * @param nodeDimension      The size of one single node.
+     * @param smallestGap        The gap in the lowest layer between the nodes
+     * @param verticalGap        The between each layer in the tree structure.
+     * @param normalColor        {@link #normalColor}
+     * @param highlightColor     {@link #highlightColor}
+     * @param normalColorLine    {@link #normalColorLine}
+     * @param highlightColorLine {@link #highlightColorLine}
+     */
     public VisTree(Dimension nodeDimension, int smallestGap, int verticalGap, Color normalColor, Color highlightColor, Color normalColorLine, Color highlightColorLine) {
         super(normalColor, highlightColor);
         this.normalColorLine = normalColorLine;
@@ -64,6 +89,13 @@ public class VisTree extends QuadTreeFormatPanel {
         thirdLayer.setMaximumSize(thirdLayer.getPreferredSize());
     }
 
+    /**
+     * Initializes all nodes from a given layer as inactive/unused
+     *
+     * @param nodeLayer     The layer which should initialize.
+     * @param nodePanel     The panel on which the layer should be added.
+     * @param nodeDimension The size of one single node.
+     */
     private void initNodes(NODE_LAYER nodeLayer, JPanel nodePanel, Dimension nodeDimension) {
         if (nodeLayer == NODE_LAYER.ROOT) {
             initNode(nodeLayer.singleNode, nodePanel, nodeDimension);
@@ -76,6 +108,13 @@ public class VisTree extends QuadTreeFormatPanel {
         }
     }
 
+    /**
+     * Initializes the given node as inactive/unused on the given panel.
+     *
+     * @param nodeButton    The node to initialize.
+     * @param nodePanel     The panel on which the node should be added.
+     * @param nodeDimension The size of the node.
+     */
     private void initNode(JButton nodeButton, JPanel nodePanel, Dimension nodeDimension) {
         nodeButton.addActionListener(this);
         nodeButton.setBackground(normalColor);
@@ -83,6 +122,16 @@ public class VisTree extends QuadTreeFormatPanel {
         nodePanel.add(nodeButton);
     }
 
+    /**
+     * Draws the lines between the nodes in the source and the nodes in destination.
+     * The first node in source will be connected to the first four nodes in destination and so on.
+     * The color of the lines are depending on the node state(active/inactive) from the source node.
+     * They will drawn in the ambivalent colors from {@link #normalColor} and {@link #highlightColor}
+     *
+     * @param g           The graphic object to draw on.
+     * @param source      The nodes to connect with four nodes in destination.
+     * @param destination The nodes to connect with one node in source.
+     */
     private void paintConnections(Graphics g, JButton[] source, JButton[] destination) {
         Graphics2D g2d = (Graphics2D) g;
 
@@ -107,6 +156,12 @@ public class VisTree extends QuadTreeFormatPanel {
         }
     }
 
+    /**
+     * Calculates the start position for the line between to nodes
+     *
+     * @param source The node where the line should start.
+     * @return The start position for the connection line.
+     */
     private Point calcNodePositionAsSource(JButton source) {
         Point positionButtonRelative = source.getLocation();
         Point sourcePosition = source.getParent().getLocation();
@@ -116,6 +171,12 @@ public class VisTree extends QuadTreeFormatPanel {
         return sourcePosition;
     }
 
+    /**
+     * Calculates the end position for the line between to nodes
+     *
+     * @param dest The node where the line should end.
+     * @return The end position for the connection line.
+     */
     private Point calcNodePositionAsDestination(JButton dest) {
         Point destPosition = calcNodePositionAsSource(dest);
         destPosition.translate(0, -dest.getHeight());
@@ -123,6 +184,11 @@ public class VisTree extends QuadTreeFormatPanel {
         return destPosition;
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Draw all the connection lines in the tree structure.
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -132,6 +198,11 @@ public class VisTree extends QuadTreeFormatPanel {
         paintConnections(g, NODE_LAYER.LAYER_2.nodeLayerArray, NODE_LAYER.LAYER_3.nodeLayerArray);
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * For every layer in the Quad-Tree it transmits the active state of the elements to the equivalent nodes.
+     */
     @Override
     protected void updateAppearance() {
         Direction[] tmpDirection = new Direction[3];
@@ -156,6 +227,15 @@ public class VisTree extends QuadTreeFormatPanel {
         repaint();
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * The quad will be updated based on the third layer of the tree structure, which is the lowest layer in the Quad-Tree.
+     * At the end the whole Quad-Tree can be updated depending on the lowest layer.
+     * Also the appearance of this Quad-Tree format will be updated based on the updated Quad-Tree,
+     * because it's easier to change the whole appearance based on the new quad tree,
+     * instead of do this hardcoded in {@link #processAppearanceChange(ActionEvent)},
+     */
     @Override
     protected void updateQuad() {
         Direction[] tmpDirection = new Direction[3];
@@ -175,6 +255,17 @@ public class VisTree extends QuadTreeFormatPanel {
         updateAppearance();
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * If the user clicked on a node their state switches from active to inactive or vice versa.
+     * Later the Quad-Tree will be updated based on the third nodes layer.
+     * So if there are changes in the upper layer it's required to adjust the third layer and transmit the changes downwards.
+     * Changes in the third layer must not be transmit upwards, because the upper layer aren't needed to update the Quad-Tree
+     * and their appearance can be easily changed with the updated Quad-Tree.
+     * To guarantee that the tree structure remains correct after the user had activated or deactivated a node in the upper layers or the root node,
+     * also the child nodes of this activated or deactivated node needs to be set accordingly.
+     */
     @Override
     protected void processAppearanceChange(ActionEvent e) {
         JButton actionNode = (JButton) e.getSource();
@@ -221,6 +312,15 @@ public class VisTree extends QuadTreeFormatPanel {
         // It's easier to do this with the function 'updateAppearance', after the quad was updated depending on layer 3
     }
 
+    /**
+     * The function changes the color of the nodes corresponding to the given state.
+     * Only the nodes in the given Index range will be changed.
+     *
+     * @param nodeLayer The root or one of the three layers which contains the nodes to be changed.
+     * @param fromIdx   The first node which should set to the given state
+     * @param toIdx     The last node which should set to the given state
+     * @param nodeState The state on which the nodes should set
+     */
     private void setNodesState(NODE_LAYER nodeLayer, int fromIdx, int toIdx, NODE_STATE nodeState) {
         for (int i = fromIdx; i <= toIdx; i++) {
             if (nodeState == NODE_STATE.ACTIVE) {
@@ -231,11 +331,17 @@ public class VisTree extends QuadTreeFormatPanel {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String nameTreeFormat() {
         return "VisTree";
     }
 
+    /**
+     * Can be used to describe if a node is active/used or inactive/unused
+     */
     private enum NODE_STATE {
         ACTIVE, INACTIVE
     }

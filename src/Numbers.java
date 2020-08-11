@@ -35,7 +35,7 @@ public class Numbers extends QuadTreeFormatPanel {
     private JTextArea textArea = new JTextArea(1, 90);
 
     /**
-     * Creates a new JPanel with a Quad-Tree represented as a sequence of numbers and a text area to copy the sequence
+     * Creates a new JPanel with a 'root + 3 layer Quad-Tree' represented as a sequence of numbers and a text area to copy the sequence
      *
      * @param numberDimension dimension/size of one number/visual component
      * @param normalColor     {@link #normalColor}
@@ -153,13 +153,13 @@ public class Numbers extends QuadTreeFormatPanel {
     /**
      * {@inheritDoc}
      * <p>
-     * If the user clicked one Number their state switches from active to inactive or vice versa.
+     * If the user clicked on a number their state switches from active to inactive or vice versa.
      * Later the Quad-Tree will be updated based on the third numbers layer.
      * So if there are changes in the upper layer it's required to adjust the third layer and transmit the changes downwards.
      * Changes in the third layer must not be transmit upwards, because the upper layer aren't needed to update the Quad-Tree
      * and their appearance can be easily changed with the updated Quad-Tree.
-     * To guarantee that, after the user had activated or deactivated a number in the upper layers, the number sequence remains correct
-     * also the 'child numbers' of these activated or deactivated number needs to be set accordingly.
+     * To guarantee that the number sequence remains correct after the user had activated or deactivated a number in the upper layers,
+     * also the 'child numbers' of this activated or deactivated number needs to be set accordingly.
      */
     @Override
     protected void processAppearanceChange(ActionEvent e) {
