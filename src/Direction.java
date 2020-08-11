@@ -11,11 +11,11 @@ public enum Direction {
      */
     NE,
     /**
-     * South West
+     * South East
      */
     SE,
     /**
-     * South East
+     * South West
      */
     SW
 }
