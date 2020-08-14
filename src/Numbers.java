@@ -101,19 +101,18 @@ public class Numbers extends QuadTreeFormatPanel {
      */
     @Override
     protected void updateAppearance() {
-        Direction[] possibleDirections = new Direction[]{Direction.NW, Direction.NE, Direction.SE, Direction.SW};
         Direction[] tmpDirection = new Direction[3];
 
         for (int i = 0; i < NUMBER_OF_DIRECTIONS; i++) {
-            tmpDirection[0] = possibleDirections[i];
+            tmpDirection[0] = POSSIBLE_DIRECTIONS[i];
             NUMBERS_LAYER.LAYER_1.numbersLayerArray[i].setForeground(getColorDependingOnQuadState(Arrays.copyOfRange(tmpDirection, 0, 1)));
 
             for (int j = 0; j < NUMBER_OF_DIRECTIONS; j++) {
-                tmpDirection[1] = possibleDirections[j];
+                tmpDirection[1] = POSSIBLE_DIRECTIONS[j];
                 NUMBERS_LAYER.LAYER_2.numbersLayerArray[i * 4 + j].setForeground(getColorDependingOnQuadState(Arrays.copyOfRange(tmpDirection, 0, 2)));
 
                 for (int k = 0; k < NUMBER_OF_DIRECTIONS; k++) {
-                    tmpDirection[2] = possibleDirections[k];
+                    tmpDirection[2] = POSSIBLE_DIRECTIONS[k];
                     NUMBERS_LAYER.LAYER_3.numbersLayerArray[i * 16 + j * 4 + k].setForeground(getColorDependingOnQuadState(tmpDirection));
                 }
             }
